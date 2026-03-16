@@ -1,0 +1,82 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Funnel Chart",
+      "description": "Horizontal funnel showing progressive narrowing through stages",
+      "author": "vegaviz",
+      "uuid": "funnel-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Stage__", "name": "Stage", "description": "Funnel stage label", "type": "text", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Count at each stage", "type": "numeric", "kind": "measure" },
+      { "key": "__Order__", "name": "Order", "description": "Stage order (1=top)", "type": "numeric", "kind": "column" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 20
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "transform": [
+    { "calculate": "-datum['__Value__'] / 2", "as": "x_start" },
+    { "calculate": "datum['__Value__'] / 2", "as": "x_end" }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadius": 4
+      },
+      "encoding": {
+        "y": {
+          "field": "__Stage__",
+          "type": "nominal",
+          "sort": { "field": "__Order__" },
+          "axis": { "title": null }
+        },
+        "x": {
+          "field": "x_start",
+          "type": "quantitative",
+          "axis": null
+        },
+        "x2": { "field": "x_end" },
+        "color": {
+          "field": "__Order__",
+          "type": "ordinal",
+          "scale": { "scheme": "pbiColorOrdinal" },
+          "legend": null
+        },
+        "tooltip": [
+          { "field": "__Stage__", "title": "Stage" },
+          { "field": "__Value__", "title": "Count", "format": ",.0f" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#ffffff"
+      },
+      "encoding": {
+        "y": { "field": "__Stage__", "type": "nominal", "sort": { "field": "__Order__" } },
+        "text": { "field": "__Value__", "type": "quantitative", "format": ",.0f" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Dumbbell Chart",
+      "description": "Compare two values per category with connected dots",
+      "author": "vegaviz",
+      "uuid": "dumbbell-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Category__", "name": "Category", "description": "Row label", "type": "text", "kind": "column" },
+      { "key": "__Start__", "name": "Start", "description": "Left dot value", "type": "numeric", "kind": "measure" },
+      { "key": "__End__", "name": "End", "description": "Right dot value", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 2,
+        "color": "#e0e0e0"
+      },
+      "encoding": {
+        "y": { "field": "__Category__", "type": "nominal", "axis": { "title": null } },
+        "x": { "field": "__Start__", "type": "quantitative", "axis": { "title": null } },
+        "x2": { "field": "__End__" }
+      }
+    },
+    {
+      "mark": { "type": "circle", "size": 80 },
+      "encoding": {
+        "y": { "field": "__Category__", "type": "nominal" },
+        "x": { "field": "__Start__", "type": "quantitative" },
+        "color": { "value": { "expr": "pbiColor(0)" } },
+        "tooltip": [
+          { "field": "__Category__", "title": "Category" },
+          { "field": "__Start__", "title": "Start", "format": ",.0f" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "circle", "size": 80 },
+      "encoding": {
+        "y": { "field": "__Category__", "type": "nominal" },
+        "x": { "field": "__End__", "type": "quantitative" },
+        "color": { "value": { "expr": "pbiColor(1)" } },
+        "tooltip": [
+          { "field": "__Category__", "title": "Category" },
+          { "field": "__End__", "title": "End", "format": ",.0f" }
+        ]
+      }
+    }
+  ]
+}

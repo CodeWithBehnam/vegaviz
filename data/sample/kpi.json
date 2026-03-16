@@ -1,0 +1,6 @@
+[
+  { "Metric": "Revenue", "Value": 245000, "Target": 230000, "PreviousPeriod": 218000 },
+  { "Metric": "Profit", "Value": 62000, "Target": 70000, "PreviousPeriod": 58000 },
+  { "Metric": "Customers", "Value": 1280, "Target": 1200, "PreviousPeriod": 1150 },
+  { "Metric": "Satisfaction", "Value": 4.3, "Target": 4.5, "PreviousPeriod": 4.1 }
+]

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Bubble Chart",
+      "description": "Scatter plot with size encoding for a third measure",
+      "author": "vegaviz",
+      "uuid": "bubble-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__X__", "name": "X Value", "description": "X-axis measure", "type": "numeric", "kind": "measure" },
+      { "key": "__Y__", "name": "Y Value", "description": "Y-axis measure", "type": "numeric", "kind": "measure" },
+      { "key": "__Size__", "name": "Size", "description": "Bubble size measure", "type": "numeric", "kind": "measure" },
+      { "key": "__Category__", "name": "Category", "description": "Color grouping", "type": "text", "kind": "column" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "mark": {
+    "type": "circle",
+    "opacity": 0.7
+  },
+  "encoding": {
+    "x": {
+      "field": "__X__",
+      "type": "quantitative",
+      "axis": { "title": null }
+    },
+    "y": {
+      "field": "__Y__",
+      "type": "quantitative",
+      "axis": { "title": null }
+    },
+    "size": {
+      "field": "__Size__",
+      "type": "quantitative",
+      "legend": { "title": null }
+    },
+    "color": {
+      "field": "__Category__",
+      "type": "nominal",
+      "scale": { "scheme": "pbiColorNominal" },
+      "legend": { "title": null }
+    },
+    "tooltip": [
+      { "field": "__Category__", "title": "Category" },
+      { "field": "__X__", "title": "X", "format": ",.0f" },
+      { "field": "__Y__", "title": "Y", "format": ",.0f" },
+      { "field": "__Size__", "title": "Size", "format": ",.0f" }
+    ]
+  }
+}

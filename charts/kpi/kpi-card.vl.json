@@ -1,0 +1,103 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "KPI Card",
+      "description": "Single metric card with actual, target comparison and variance indicator",
+      "author": "vegaviz",
+      "uuid": "kpi-card-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Value__", "name": "Value", "description": "Current metric value", "type": "numeric", "kind": "measure" },
+      { "key": "__Target__", "name": "Target", "description": "Target value", "type": "numeric", "kind": "measure" },
+      { "key": "__Label__", "name": "Label", "description": "Metric name", "type": "text", "kind": "column" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 10
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "transform": [
+    { "calculate": "(datum['__Value__'] - datum['__Target__']) / datum['__Target__']", "as": "variance" },
+    { "calculate": "datum.variance >= 0 ? '▲' : '▼'", "as": "arrow" },
+    { "calculate": "datum.variance >= 0 ? 'positive' : 'negative'", "as": "status" }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 32,
+        "fontWeight": "bold",
+        "color": "#252423",
+        "dy": -20
+      },
+      "encoding": {
+        "text": { "field": "__Value__", "type": "quantitative", "format": ",.0f" }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "color": "#605E5C",
+        "dy": 5
+      },
+      "encoding": {
+        "text": { "field": "__Label__", "type": "nominal" }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "dy": 28
+      },
+      "encoding": {
+        "text": { "field": "arrow", "type": "nominal" },
+        "color": {
+          "field": "status",
+          "type": "nominal",
+          "scale": {
+            "domain": ["positive", "negative"],
+            "range": [{ "expr": "pbiColor('good')" }, { "expr": "pbiColor('bad')" }]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "dx": 15,
+        "dy": 28
+      },
+      "encoding": {
+        "text": { "field": "variance", "type": "quantitative", "format": "+.1%" },
+        "color": {
+          "field": "status",
+          "type": "nominal",
+          "scale": {
+            "domain": ["positive", "negative"],
+            "range": [{ "expr": "pbiColor('good')" }, { "expr": "pbiColor('bad')" }]
+          },
+          "legend": null
+        }
+      }
+    }
+  ]
+}

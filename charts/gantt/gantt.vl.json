@@ -1,0 +1,81 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Gantt Chart",
+      "description": "Timeline bars showing task duration with category color coding",
+      "author": "vegaviz",
+      "uuid": "gantt-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Task__", "name": "Task", "description": "Task name", "type": "text", "kind": "column" },
+      { "key": "__Start__", "name": "Start", "description": "Start date", "type": "dateTime", "kind": "column" },
+      { "key": "__End__", "name": "End", "description": "End date", "type": "dateTime", "kind": "column" },
+      { "key": "__Stage__", "name": "Stage", "description": "Task stage/phase for color", "type": "text", "kind": "column" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadius": 4,
+        "height": 20
+      },
+      "encoding": {
+        "y": {
+          "field": "__Task__",
+          "type": "nominal",
+          "sort": { "field": "__Start__" },
+          "axis": { "title": null }
+        },
+        "x": {
+          "field": "__Start__",
+          "type": "temporal",
+          "axis": { "title": null, "format": "%b %d" }
+        },
+        "x2": { "field": "__End__" },
+        "color": {
+          "field": "__Stage__",
+          "type": "nominal",
+          "scale": { "scheme": "pbiColorNominal" },
+          "legend": { "title": null }
+        },
+        "tooltip": [
+          { "field": "__Task__", "title": "Task" },
+          { "field": "__Stage__", "title": "Stage" },
+          { "field": "__Start__", "type": "temporal", "title": "Start", "format": "%b %d, %Y" },
+          { "field": "__End__", "type": "temporal", "title": "End", "format": "%b %d, %Y" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#E74C3C",
+        "strokeWidth": 2,
+        "strokeDash": [4, 4]
+      },
+      "encoding": {
+        "x": { "datum": { "expr": "now()" } }
+      }
+    }
+  ]
+}

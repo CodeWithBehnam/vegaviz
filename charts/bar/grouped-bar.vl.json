@@ -1,0 +1,65 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Grouped Bar Chart",
+      "description": "Side-by-side bars grouped by category with color encoding",
+      "author": "vegaviz",
+      "uuid": "grouped-bar-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Category__", "name": "Category", "description": "Grouping field", "type": "text", "kind": "column" },
+      { "key": "__SubCategory__", "name": "Sub-Category", "description": "Color field", "type": "text", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Bar length", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "mark": {
+    "type": "bar",
+    "cornerRadiusTopLeft": 3,
+    "cornerRadiusTopRight": 3
+  },
+  "encoding": {
+    "x": {
+      "field": "__Category__",
+      "type": "nominal",
+      "axis": { "labelAngle": 0, "title": null }
+    },
+    "y": {
+      "field": "__Value__",
+      "type": "quantitative",
+      "axis": { "title": null, "grid": true }
+    },
+    "xOffset": {
+      "field": "__SubCategory__"
+    },
+    "color": {
+      "field": "__SubCategory__",
+      "type": "nominal",
+      "scale": { "scheme": "pbiColorNominal" },
+      "legend": { "title": null }
+    },
+    "tooltip": [
+      { "field": "__Category__", "title": "Category" },
+      { "field": "__SubCategory__", "title": "Sub-Category" },
+      { "field": "__Value__", "title": "Value", "format": ",.0f" }
+    ]
+  }
+}

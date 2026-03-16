@@ -1,0 +1,72 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Waffle Chart",
+      "description": "Grid-based percentage chart showing part-to-whole as filled squares",
+      "author": "vegaviz",
+      "uuid": "waffle-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Value__", "name": "Value", "description": "Percentage value (0-100)", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": false,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "description": "Generates a 10x10 waffle grid. Use sequence generator since Deneb data transforms work here (no cross-filter needed).",
+  "data": {
+    "name": "dataset"
+  },
+  "width": "container",
+  "height": "container",
+  "transform": [
+    { "calculate": "sequence(1, 101)", "as": "grid" },
+    { "flatten": ["grid"] },
+    { "calculate": "ceil(datum.grid / 10)", "as": "row" },
+    { "calculate": "datum.grid - (datum.row - 1) * 10", "as": "col" },
+    {
+      "calculate": "datum.grid <= datum['__Value__'] ? 'Filled' : 'Empty'",
+      "as": "status"
+    }
+  ],
+  "mark": {
+    "type": "square",
+    "size": 200,
+    "cornerRadius": 2
+  },
+  "encoding": {
+    "x": {
+      "field": "col",
+      "type": "ordinal",
+      "axis": null
+    },
+    "y": {
+      "field": "row",
+      "type": "ordinal",
+      "sort": "descending",
+      "axis": null
+    },
+    "color": {
+      "field": "status",
+      "type": "nominal",
+      "scale": {
+        "domain": ["Filled", "Empty"],
+        "range": [{ "expr": "pbiColor(0)" }, "#e8e8e8"]
+      },
+      "legend": null
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[
+  { "Date": "2025-01-01", "Value": 120, "Category": "A", "Target": 115 },
+  { "Date": "2025-02-01", "Value": 135, "Category": "A", "Target": 130 },
+  { "Date": "2025-03-01", "Value": 128, "Category": "A", "Target": 140 },
+  { "Date": "2025-04-01", "Value": 152, "Category": "A", "Target": 145 },
+  { "Date": "2025-05-01", "Value": 161, "Category": "A", "Target": 155 },
+  { "Date": "2025-06-01", "Value": 148, "Category": "A", "Target": 160 },
+  { "Date": "2025-01-01", "Value": 95, "Category": "B", "Target": 100 },
+  { "Date": "2025-02-01", "Value": 110, "Category": "B", "Target": 105 },
+  { "Date": "2025-03-01", "Value": 102, "Category": "B", "Target": 110 },
+  { "Date": "2025-04-01", "Value": 125, "Category": "B", "Target": 115 },
+  { "Date": "2025-05-01", "Value": 138, "Category": "B", "Target": 125 },
+  { "Date": "2025-06-01", "Value": 130, "Category": "B", "Target": 130 }
+]

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Sparkline",
+      "description": "Compact inline trend indicator with area fill and endpoint label",
+      "author": "vegaviz",
+      "uuid": "sparkline-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Date__", "name": "Date", "description": "X-axis temporal field", "type": "dateTime", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Y-axis measure", "type": "numeric", "kind": "measure" },
+      { "key": "__Category__", "name": "Category", "description": "Facet field for small multiples", "type": "text", "kind": "column" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "facet": {
+    "field": "__Category__",
+    "type": "nominal",
+    "columns": 1
+  },
+  "spec": {
+    "width": "container",
+    "height": 30,
+    "layer": [
+      {
+        "mark": {
+          "type": "area",
+          "interpolate": "monotone",
+          "opacity": 0.15,
+          "color": { "expr": "pbiColor(0)" }
+        },
+        "encoding": {
+          "x": { "field": "__Date__", "type": "temporal", "axis": null },
+          "y": {
+            "field": "__Value__",
+            "type": "quantitative",
+            "axis": null,
+            "scale": { "zero": false }
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "line",
+          "interpolate": "monotone",
+          "strokeWidth": 1.5,
+          "color": { "expr": "pbiColor(0)" }
+        },
+        "encoding": {
+          "x": { "field": "__Date__", "type": "temporal" },
+          "y": { "field": "__Value__", "type": "quantitative" }
+        }
+      },
+      {
+        "transform": [
+          { "window": [{ "op": "rank", "as": "rank" }], "sort": [{ "field": "__Date__", "order": "descending" }] },
+          { "filter": "datum.rank === 1" }
+        ],
+        "mark": {
+          "type": "circle",
+          "size": 30,
+          "color": { "expr": "pbiColor(0)" }
+        },
+        "encoding": {
+          "x": { "field": "__Date__", "type": "temporal" },
+          "y": { "field": "__Value__", "type": "quantitative" }
+        }
+      }
+    ]
+  }
+}

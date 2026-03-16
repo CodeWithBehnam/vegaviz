@@ -1,0 +1,14 @@
+[
+  { "Category": "Electronics", "Region": "North", "Sales": 12500, "Profit": 3200, "Month": "2025-01", "Target": 11000 },
+  { "Category": "Electronics", "Region": "South", "Sales": 9800, "Profit": 2100, "Month": "2025-01", "Target": 10000 },
+  { "Category": "Electronics", "Region": "North", "Sales": 14200, "Profit": 4100, "Month": "2025-02", "Target": 12000 },
+  { "Category": "Electronics", "Region": "South", "Sales": 10500, "Profit": 2800, "Month": "2025-02", "Target": 10500 },
+  { "Category": "Clothing", "Region": "North", "Sales": 8700, "Profit": 2900, "Month": "2025-01", "Target": 9000 },
+  { "Category": "Clothing", "Region": "South", "Sales": 7200, "Profit": 1800, "Month": "2025-01", "Target": 7500 },
+  { "Category": "Clothing", "Region": "North", "Sales": 9400, "Profit": 3100, "Month": "2025-02", "Target": 9500 },
+  { "Category": "Clothing", "Region": "South", "Sales": 8100, "Profit": 2400, "Month": "2025-02", "Target": 8000 },
+  { "Category": "Furniture", "Region": "North", "Sales": 6300, "Profit": 1200, "Month": "2025-01", "Target": 6000 },
+  { "Category": "Furniture", "Region": "South", "Sales": 5100, "Profit": 900, "Month": "2025-01", "Target": 5500 },
+  { "Category": "Furniture", "Region": "North", "Sales": 7800, "Profit": 1800, "Month": "2025-02", "Target": 7000 },
+  { "Category": "Furniture", "Region": "South", "Sales": 5900, "Profit": 1100, "Month": "2025-02", "Target": 6000 }
+]

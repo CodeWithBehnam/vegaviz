@@ -1,0 +1,66 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Diverging Bar Chart",
+      "description": "Horizontal bars diverging from zero with positive/negative color encoding",
+      "author": "vegaviz",
+      "uuid": "diverging-bar-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Category__", "name": "Category", "description": "Row label", "type": "text", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Positive or negative measure", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "transform": [
+    { "calculate": "datum['__Value__'] >= 0 ? 'positive' : 'negative'", "as": "direction" }
+  ],
+  "mark": {
+    "type": "bar",
+    "cornerRadius": 2
+  },
+  "encoding": {
+    "y": {
+      "field": "__Category__",
+      "type": "nominal",
+      "sort": { "field": "__Value__", "order": "descending" },
+      "axis": { "title": null }
+    },
+    "x": {
+      "field": "__Value__",
+      "type": "quantitative",
+      "axis": { "title": null }
+    },
+    "color": {
+      "field": "direction",
+      "type": "nominal",
+      "scale": {
+        "domain": ["positive", "negative"],
+        "range": [{ "expr": "pbiColor('good')" }, { "expr": "pbiColor('bad')" }]
+      },
+      "legend": null
+    },
+    "tooltip": [
+      { "field": "__Category__", "title": "Category" },
+      { "field": "__Value__", "title": "Value", "format": "+,.0f" }
+    ]
+  }
+}

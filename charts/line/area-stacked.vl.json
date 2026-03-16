@@ -1,0 +1,63 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Stacked Area Chart",
+      "description": "Stacked area showing composition over time",
+      "author": "vegaviz",
+      "uuid": "stacked-area-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Date__", "name": "Date", "description": "X-axis temporal", "type": "dateTime", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Area height", "type": "numeric", "kind": "measure" },
+      { "key": "__Category__", "name": "Category", "description": "Stack grouping", "type": "text", "kind": "column" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "mark": {
+    "type": "area",
+    "interpolate": "monotone",
+    "opacity": 0.8
+  },
+  "encoding": {
+    "x": {
+      "field": "__Date__",
+      "type": "temporal",
+      "axis": { "title": null, "format": "%b %Y" }
+    },
+    "y": {
+      "field": "__Value__",
+      "type": "quantitative",
+      "stack": "zero",
+      "axis": { "title": null }
+    },
+    "color": {
+      "field": "__Category__",
+      "type": "nominal",
+      "scale": { "scheme": "pbiColorNominal" },
+      "legend": { "title": null }
+    },
+    "tooltip": [
+      { "field": "__Date__", "type": "temporal", "title": "Date", "format": "%b %Y" },
+      { "field": "__Category__", "title": "Category" },
+      { "field": "__Value__", "title": "Value", "format": ",.0f" }
+    ]
+  }
+}

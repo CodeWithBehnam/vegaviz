@@ -1,0 +1,61 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Calendar Heatmap",
+      "description": "Matrix heatmap with rows and columns colored by measure intensity",
+      "author": "vegaviz",
+      "uuid": "heatmap-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Row__", "name": "Row", "description": "Y-axis category", "type": "text", "kind": "column" },
+      { "key": "__Column__", "name": "Column", "description": "X-axis category", "type": "text", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Color intensity measure", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 100
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "mark": {
+    "type": "rect",
+    "cornerRadius": 2
+  },
+  "encoding": {
+    "x": {
+      "field": "__Column__",
+      "type": "nominal",
+      "axis": { "title": null, "labelAngle": 0, "domain": false }
+    },
+    "y": {
+      "field": "__Row__",
+      "type": "nominal",
+      "axis": { "title": null, "domain": false }
+    },
+    "color": {
+      "field": "__Value__",
+      "type": "quantitative",
+      "scale": { "scheme": "pbiColorLinear" },
+      "legend": { "title": null }
+    },
+    "tooltip": [
+      { "field": "__Row__", "title": "Row" },
+      { "field": "__Column__", "title": "Column" },
+      { "field": "__Value__", "title": "Value", "format": ",.0f" }
+    ]
+  }
+}

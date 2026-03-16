@@ -1,0 +1,83 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Actual vs Target Line",
+      "description": "Solid actual line with dashed target line for variance analysis",
+      "author": "vegaviz",
+      "uuid": "actual-target-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Date__", "name": "Date", "description": "X-axis temporal field", "type": "dateTime", "kind": "column" },
+      { "key": "__Actual__", "name": "Actual", "description": "Actual measure", "type": "numeric", "kind": "measure" },
+      { "key": "__Target__", "name": "Target", "description": "Target measure", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2.5,
+        "color": { "expr": "pbiColor(0)" }
+      },
+      "encoding": {
+        "x": {
+          "field": "__Date__",
+          "type": "temporal",
+          "axis": { "title": null, "format": "%b %Y" }
+        },
+        "y": {
+          "field": "__Actual__",
+          "type": "quantitative",
+          "axis": { "title": null }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 1.5,
+        "strokeDash": [6, 4],
+        "color": { "expr": "pbiColor(1)" }
+      },
+      "encoding": {
+        "x": { "field": "__Date__", "type": "temporal" },
+        "y": { "field": "__Target__", "type": "quantitative" }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 40,
+        "opacity": 0
+      },
+      "encoding": {
+        "x": { "field": "__Date__", "type": "temporal" },
+        "y": { "field": "__Actual__", "type": "quantitative" },
+        "tooltip": [
+          { "field": "__Date__", "type": "temporal", "title": "Date", "format": "%b %Y" },
+          { "field": "__Actual__", "title": "Actual", "format": ",.0f" },
+          { "field": "__Target__", "title": "Target", "format": ",.0f" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Donut Chart",
+      "description": "Donut chart with labels for part-to-whole comparison",
+      "author": "vegaviz",
+      "uuid": "donut-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Category__", "name": "Category", "description": "Slice category", "type": "text", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Slice size measure", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "layer": [
+    {
+      "mark": {
+        "type": "arc",
+        "innerRadius": 60,
+        "outerRadius": 100,
+        "padAngle": 0.02
+      },
+      "encoding": {
+        "theta": {
+          "field": "__Value__",
+          "type": "quantitative",
+          "stack": true
+        },
+        "color": {
+          "field": "__Category__",
+          "type": "nominal",
+          "scale": { "scheme": "pbiColorNominal" },
+          "legend": { "title": null }
+        },
+        "tooltip": [
+          { "field": "__Category__", "title": "Category" },
+          { "field": "__Value__", "title": "Value", "format": ",.0f" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "radiusOffset": 20,
+        "fontSize": 11
+      },
+      "encoding": {
+        "theta": {
+          "field": "__Value__",
+          "type": "quantitative",
+          "stack": true
+        },
+        "text": {
+          "field": "__Category__",
+          "type": "nominal"
+        },
+        "color": { "value": "#605E5C" }
+      }
+    }
+  ]
+}

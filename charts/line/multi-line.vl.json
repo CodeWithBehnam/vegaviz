@@ -1,0 +1,76 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Multi-Line Chart",
+      "description": "Multiple line series with points and interactive tooltip",
+      "author": "vegaviz",
+      "uuid": "multi-line-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Date__", "name": "Date", "description": "X-axis temporal field", "type": "dateTime", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Y-axis measure", "type": "numeric", "kind": "measure" },
+      { "key": "__Series__", "name": "Series", "description": "Line color grouping", "type": "text", "kind": "column" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "__Date__",
+          "type": "temporal",
+          "axis": { "title": null, "format": "%b %Y" }
+        },
+        "y": {
+          "field": "__Value__",
+          "type": "quantitative",
+          "axis": { "title": null }
+        },
+        "color": {
+          "field": "__Series__",
+          "type": "nominal",
+          "scale": { "scheme": "pbiColorNominal" },
+          "legend": { "title": null }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 40
+      },
+      "encoding": {
+        "x": { "field": "__Date__", "type": "temporal" },
+        "y": { "field": "__Value__", "type": "quantitative" },
+        "color": { "field": "__Series__", "type": "nominal" },
+        "tooltip": [
+          { "field": "__Date__", "type": "temporal", "title": "Date", "format": "%b %Y" },
+          { "field": "__Series__", "title": "Series" },
+          { "field": "__Value__", "title": "Value", "format": ",.0f" }
+        ]
+      }
+    }
+  ]
+}

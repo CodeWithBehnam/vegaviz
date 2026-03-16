@@ -1,0 +1,77 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Bullet Chart",
+      "description": "Bullet chart comparing actual vs target with qualitative ranges",
+      "author": "vegaviz",
+      "uuid": "bullet-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Metric__", "name": "Metric", "description": "Metric label", "type": "text", "kind": "column" },
+      { "key": "__Actual__", "name": "Actual", "description": "Actual value", "type": "numeric", "kind": "measure" },
+      { "key": "__Target__", "name": "Target", "description": "Target value", "type": "numeric", "kind": "measure" },
+      { "key": "__Max__", "name": "Max", "description": "Maximum range", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "facet": {
+    "field": "__Metric__",
+    "type": "nominal",
+    "columns": 1
+  },
+  "spec": {
+    "width": "container",
+    "height": 30,
+    "layer": [
+      {
+        "mark": { "type": "bar", "color": "#e8e8e8" },
+        "encoding": {
+          "x": { "field": "__Max__", "type": "quantitative", "axis": { "title": null } }
+        }
+      },
+      {
+        "mark": {
+          "type": "bar",
+          "height": 15,
+          "color": { "expr": "pbiColor(0)" }
+        },
+        "encoding": {
+          "x": { "field": "__Actual__", "type": "quantitative" }
+        }
+      },
+      {
+        "mark": {
+          "type": "tick",
+          "thickness": 3,
+          "color": "#252423"
+        },
+        "encoding": {
+          "x": { "field": "__Target__", "type": "quantitative" },
+          "tooltip": [
+            { "field": "__Metric__", "title": "Metric" },
+            { "field": "__Actual__", "title": "Actual", "format": ",.0f" },
+            { "field": "__Target__", "title": "Target", "format": ",.0f" }
+          ]
+        }
+      }
+    ]
+  }
+}

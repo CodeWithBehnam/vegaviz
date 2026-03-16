@@ -1,0 +1,71 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Waterfall Chart",
+      "description": "Sequential bar chart showing cumulative effect of positive and negative values",
+      "author": "vegaviz",
+      "uuid": "waterfall-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Category__", "name": "Category", "description": "Step label", "type": "text", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Step amount (positive or negative)", "type": "numeric", "kind": "measure" },
+      { "key": "__Order__", "name": "Order", "description": "Sort order", "type": "numeric", "kind": "column" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "transform": [
+    { "sort": [{ "field": "__Order__" }], "window": [{ "op": "sum", "field": "__Value__", "as": "cumulative" }] },
+    { "calculate": "datum.cumulative - datum['__Value__']", "as": "start" },
+    { "calculate": "datum['__Value__'] >= 0 ? 'positive' : 'negative'", "as": "direction" }
+  ],
+  "mark": {
+    "type": "bar",
+    "cornerRadius": 2
+  },
+  "encoding": {
+    "x": {
+      "field": "__Category__",
+      "type": "nominal",
+      "sort": { "field": "__Order__" },
+      "axis": { "title": null, "labelAngle": -45 }
+    },
+    "y": {
+      "field": "start",
+      "type": "quantitative",
+      "axis": { "title": null }
+    },
+    "y2": { "field": "cumulative" },
+    "color": {
+      "field": "direction",
+      "type": "nominal",
+      "scale": {
+        "domain": ["positive", "negative"],
+        "range": [{ "expr": "pbiColor('good')" }, { "expr": "pbiColor('bad')" }]
+      },
+      "legend": null
+    },
+    "tooltip": [
+      { "field": "__Category__", "title": "Step" },
+      { "field": "__Value__", "title": "Amount", "format": "+,.0f" },
+      { "field": "cumulative", "title": "Cumulative", "format": ",.0f" }
+    ]
+  }
+}

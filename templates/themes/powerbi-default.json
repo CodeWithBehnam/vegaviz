@@ -1,0 +1,34 @@
+{
+  "view": { "stroke": "transparent" },
+  "font": "Segoe UI",
+  "axis": {
+    "domain": false,
+    "grid": true,
+    "gridColor": "#e8e8e8",
+    "gridDash": [1, 5],
+    "labelColor": "#605E5C",
+    "labelFontSize": 11,
+    "titleColor": "#252423",
+    "titleFontSize": 12,
+    "titleFontWeight": "bold",
+    "tickColor": "#e8e8e8"
+  },
+  "axisX": {
+    "labelAngle": 0
+  },
+  "legend": {
+    "labelColor": "#605E5C",
+    "labelFontSize": 11,
+    "titleColor": "#252423",
+    "titleFontSize": 12
+  },
+  "title": {
+    "color": "#252423",
+    "fontSize": 14,
+    "fontWeight": "bold",
+    "anchor": "start"
+  },
+  "range": {
+    "category": { "scheme": "pbiColorNominal" }
+  }
+}

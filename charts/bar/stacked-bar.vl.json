@@ -1,0 +1,61 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Stacked Bar Chart",
+      "description": "Stacked bars with color encoding for part-to-whole comparison",
+      "author": "vegaviz",
+      "uuid": "stacked-bar-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Category__", "name": "Category", "description": "X-axis grouping", "type": "text", "kind": "column" },
+      { "key": "__Stack__", "name": "Stack", "description": "Stack color field", "type": "text", "kind": "column" },
+      { "key": "__Value__", "name": "Value", "description": "Bar segment size", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "mark": {
+    "type": "bar"
+  },
+  "encoding": {
+    "x": {
+      "field": "__Category__",
+      "type": "nominal",
+      "axis": { "labelAngle": 0, "title": null }
+    },
+    "y": {
+      "field": "__Value__",
+      "type": "quantitative",
+      "stack": "zero",
+      "axis": { "title": null }
+    },
+    "color": {
+      "field": "__Stack__",
+      "type": "nominal",
+      "scale": { "scheme": "pbiColorNominal" },
+      "legend": { "title": null }
+    },
+    "tooltip": [
+      { "field": "__Category__", "title": "Category" },
+      { "field": "__Stack__", "title": "Segment" },
+      { "field": "__Value__", "title": "Value", "format": ",.0f" }
+    ]
+  }
+}

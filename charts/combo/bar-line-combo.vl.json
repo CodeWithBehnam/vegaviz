@@ -1,0 +1,79 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Bar + Line Combo",
+      "description": "Bars for primary measure with overlaid line for secondary measure on dual axis",
+      "author": "vegaviz",
+      "uuid": "bar-line-combo-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Category__", "name": "Category", "description": "X-axis field", "type": "text", "kind": "column" },
+      { "key": "__BarValue__", "name": "Bar Value", "description": "Primary measure (bars)", "type": "numeric", "kind": "measure" },
+      { "key": "__LineValue__", "name": "Line Value", "description": "Secondary measure (line)", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "resolve": { "scale": { "y": "independent" } },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusTopLeft": 3,
+        "cornerRadiusTopRight": 3,
+        "color": { "expr": "pbiColor(0)" },
+        "opacity": 0.8
+      },
+      "encoding": {
+        "x": {
+          "field": "__Category__",
+          "type": "nominal",
+          "axis": { "title": null, "labelAngle": 0 }
+        },
+        "y": {
+          "field": "__BarValue__",
+          "type": "quantitative",
+          "axis": { "title": null }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2.5,
+        "color": { "expr": "pbiColor(1)" },
+        "point": { "size": 40, "filled": true }
+      },
+      "encoding": {
+        "x": { "field": "__Category__", "type": "nominal" },
+        "y": {
+          "field": "__LineValue__",
+          "type": "quantitative",
+          "axis": { "title": null }
+        },
+        "tooltip": [
+          { "field": "__Category__", "title": "Category" },
+          { "field": "__BarValue__", "title": "Bar Value", "format": ",.0f" },
+          { "field": "__LineValue__", "title": "Line Value", "format": ",.0f" }
+        ]
+      }
+    }
+  ]
+}

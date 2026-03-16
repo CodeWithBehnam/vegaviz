@@ -1,0 +1,76 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Tadpole Chart",
+      "description": "Lollipop-style chart showing change with directional tails",
+      "author": "vegaviz",
+      "uuid": "tadpole-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Category__", "name": "Category", "description": "Item label", "type": "text", "kind": "column" },
+      { "key": "__Current__", "name": "Current", "description": "Current period value", "type": "numeric", "kind": "measure" },
+      { "key": "__Previous__", "name": "Previous", "description": "Previous period value", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "transform": [
+    { "calculate": "datum['__Current__'] - datum['__Previous__']", "as": "change" },
+    { "calculate": "datum.change >= 0 ? 'positive' : 'negative'", "as": "direction" }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "rule", "strokeWidth": 2 },
+      "encoding": {
+        "y": {
+          "field": "__Category__",
+          "type": "nominal",
+          "sort": { "field": "change", "order": "descending" },
+          "axis": { "title": null }
+        },
+        "x": { "field": "__Previous__", "type": "quantitative", "axis": { "title": null } },
+        "x2": { "field": "__Current__" },
+        "color": {
+          "field": "direction",
+          "type": "nominal",
+          "scale": {
+            "domain": ["positive", "negative"],
+            "range": [{ "expr": "pbiColor(0)" }, { "expr": "pbiColor(1)" }]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "mark": { "type": "circle", "size": 80 },
+      "encoding": {
+        "y": { "field": "__Category__", "type": "nominal" },
+        "x": { "field": "__Current__", "type": "quantitative" },
+        "color": { "field": "direction", "type": "nominal" },
+        "tooltip": [
+          { "field": "__Category__", "title": "Category" },
+          { "field": "__Current__", "title": "Current", "format": ",.0f" },
+          { "field": "__Previous__", "title": "Previous", "format": ",.0f" },
+          { "field": "change", "title": "Change", "format": "+,.0f" }
+        ]
+      }
+    }
+  ]
+}

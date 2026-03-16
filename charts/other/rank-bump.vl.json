@@ -1,0 +1,76 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Rank / Bump Chart",
+      "description": "Track ranking changes over time with connected dots",
+      "author": "vegaviz",
+      "uuid": "rank-bump-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Period__", "name": "Period", "description": "Time period (x-axis)", "type": "text", "kind": "column" },
+      { "key": "__Item__", "name": "Item", "description": "Ranked item", "type": "text", "kind": "column" },
+      { "key": "__Rank__", "name": "Rank", "description": "Rank position (1=top)", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": false,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 100
+    }
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2,
+        "interpolate": "monotone"
+      },
+      "encoding": {
+        "x": {
+          "field": "__Period__",
+          "type": "ordinal",
+          "axis": { "title": null, "labelAngle": 0 }
+        },
+        "y": {
+          "field": "__Rank__",
+          "type": "quantitative",
+          "sort": "ascending",
+          "scale": { "reverse": true },
+          "axis": { "title": null, "tickMinStep": 1 }
+        },
+        "color": {
+          "field": "__Item__",
+          "type": "nominal",
+          "scale": { "scheme": "pbiColorNominal" },
+          "legend": { "title": null }
+        }
+      }
+    },
+    {
+      "mark": { "type": "circle", "size": 60 },
+      "encoding": {
+        "x": { "field": "__Period__", "type": "ordinal" },
+        "y": { "field": "__Rank__", "type": "quantitative" },
+        "color": { "field": "__Item__", "type": "nominal" },
+        "tooltip": [
+          { "field": "__Item__", "title": "Item" },
+          { "field": "__Period__", "title": "Period" },
+          { "field": "__Rank__", "title": "Rank" }
+        ]
+      }
+    }
+  ]
+}
