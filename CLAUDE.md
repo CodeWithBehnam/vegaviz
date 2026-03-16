@@ -1,43 +1,35 @@
 # Project: vegaviz
 
-The ultimate open-source Vega & Vega-Lite chart gallery. Copy-paste specs for Power BI Deneb and beyond.
+The definitive open-source Vega & Vega-Lite chart gallery for Power BI Deneb and beyond. 275+ specs ready to copy-paste.
 
 ## Stack
 
-- Vega-Lite v5 (primary) / Vega v5 (only when Vega-Lite can't express it)
+- Vega-Lite v5 (primary) / Vega v5 (when Vega-Lite can't express it)
 - JSON spec files (`.vl.json` = Vega-Lite, `.vg.json` = Vega)
-- Deneb 1.9 custom visual (Vega 6.2.0 / Vega-Lite 6.4.1 runtime)
+- Deneb 1.9 custom visual (runtime: Vega 6.2.0 / Vega-Lite 6.4.1)
 - Python 3.12+ with `uv` for data prep notebooks
-- GitHub Pages gallery on `gh-pages` branch (single `index.html`)
+- GitHub Pages gallery on `gh-pages` branch (single `index.html`, pako + vega-embed)
 
 ## Architecture
 
 ```
 charts/
-  bar/              # Grouped, stacked, diverging
-  line/             # Line, area, sparkline, actual vs target, cumulative
-  scatter/          # Scatter, bubble, boxplot + jitter
-  donut/            # Donut and pie
-  heatmap/          # Matrix heatmap, calendar view
-  gantt/            # Gantt with today marker
-  sankey/           # Sankey flow (Vega only)
-  treemap/          # Treemap hierarchies
-  kpi/              # KPI cards with variance
-  waffle/           # Waffle percentage grids
-  bullet/           # Actual vs target ranges
-  dumbbell/         # Two-value connected dot comparison
-  waterfall/        # Cumulative pos/neg steps
-  funnel/           # Stage-based narrowing
-  combo/            # Bar + line dual axis
-  map/              # Geographic, hex-tile
-  network/          # Force-directed, org charts (Vega only)
-  other/            # Tadpole, rank/bump, anything else
+  bar/ line/ scatter/ donut/ heatmap/   # Core chart categories
+  gantt/ bullet/ kpi/ waffle/ dumbbell/ # Specialized charts
+  waterfall/ funnel/ combo/ map/        # More categories
+  sankey/ treemap/ network/ other/      # Vega-only and misc
+  community/                            # 248 specs from 10 external sources
+    bar/ line/ scatter/ ...             # Mirrors core category structure
 templates/
-  base/             # Frozen starter templates -copy, do NOT modify
-  themes/           # Power BI theme configs (Segoe UI, pbiColor schemes)
-data/sample/        # Sample datasets (sales, timeseries, kpi)
-notebooks/          # Python notebooks for data prep
-ai_docs/            # Deneb reference for agents -see deneb-reference.md
+  base/           # Frozen starter templates -- copy, do NOT modify
+  themes/         # Power BI theme configs (Segoe UI, pbiColor schemes)
+data/
+  sample/         # Sample datasets (sales, timeseries, kpi)
+  hex/            # Hex cartogram coordinates (UK, Wales LAs, Swansea/NPT MSOAs)
+ai_docs/          # Deneb API reference for agents -- see deneb-reference.md
+notebooks/        # Python notebooks for data prep
+docs/             # Gallery screenshot and assets
+.github/          # Issue templates (new-chart-request, bug-report)
 ```
 
 ## Commands
@@ -45,20 +37,23 @@ ai_docs/            # Deneb reference for agents -see deneb-reference.md
 ```bash
 uv run python -m json.tool charts/**/*.json   # Validate JSON syntax
 uv run jupyter lab                             # Open notebooks for testing
+git checkout gh-pages                          # Switch to gallery branch
 ```
 
 ## Constraints
 
-NEVER hardcode data URLs in chart specs -Deneb injects data via `"dataset"`. Sample data goes in `data/` only.
-NEVER use Vega when Vega-Lite can express the same chart -Vega-Lite is simpler to maintain and portable.
-NEVER use pixel-based sizing -use `"width": "container"` and `"height": "container"` for responsive rendering.
-NEVER use data transforms (fold, flatten, aggregate) if cross-filtering is needed -they break `__row__` linkage.
-NEVER invent Deneb features -check `ai_docs/deneb-reference.md` for actual API. Do not hallucinate expressions.
-NEVER modify files in `templates/base/` -they are frozen boilerplate. Copy them to start new charts.
-ALWAYS include `$schema` in every spec -editors and Deneb need it for validation.
-ALWAYS include `usermeta` block with dataset field mappings -required for Deneb template import.
-ALWAYS use `__FieldName__` placeholder pattern (double underscores) -Deneb substitutes these on import.
-ALWAYS use `uv` for Python tasks -pip/poetry are not configured.
+NEVER hardcode data in specs -- Deneb injects via `"data": {"name": "dataset"}`. Sample data goes in `data/` only.
+NEVER use Vega when Vega-Lite can express it -- Vega-Lite is simpler and more portable.
+NEVER use pixel sizing -- use `"width": "container"`, `"height": "container"` for responsive rendering.
+NEVER use transforms (fold, flatten, aggregate) if cross-filtering is needed -- they break `__row__` linkage.
+NEVER invent Deneb features -- check `ai_docs/deneb-reference.md` first. Do not hallucinate expressions.
+NEVER modify files in `templates/base/` -- they are frozen boilerplate. Copy them to start new charts.
+NEVER use em-dashes in any output -- use regular dashes or double dashes instead.
+ALWAYS include `$schema` pointing to v5 -- editors and Deneb need it for validation.
+ALWAYS include `usermeta` block with dataset field mappings -- required for Deneb template import.
+ALWAYS use `__FieldName__` placeholder pattern (double underscores) -- Deneb substitutes these on import.
+ALWAYS use `uv` for Python tasks -- pip/poetry are not configured.
+ALWAYS run `git checkout gh-pages` before editing the gallery -- `index.html` only exists on that branch.
 
 ## Adding a New Chart
 
@@ -66,19 +61,34 @@ ALWAYS use `uv` for Python tasks -pip/poetry are not configured.
 2. Copy `templates/base/vegalite-base.json` as starting point
 3. Set `"data": {"name": "dataset"}`, `"width": "container"`, `"height": "container"`
 4. Use `__FieldName__` placeholders for all field references
-5. Use `pbiColorNominal` / `pbiColor(index)` for colors -not hardcoded hex
-6. Fill in the `usermeta` block: name, description, dataset field mappings, interactivity flags
-7. Add sample data to `data/sample/` if a new dataset is needed
+5. Use `pbiColorNominal` / `pbiColor(index)` for colors -- not hardcoded hex values
+6. Fill in `usermeta`: name, description, dataset field mappings, interactivity flags
+7. Add sample data to `data/sample/` if a new dataset shape is needed
 8. Test in Vega Editor (https://vega.github.io/editor/) with sample data
-9. Add chart entry to `CHARTS` array in `gh-pages` branch `index.html` for gallery display
+9. Switch to `gh-pages` branch, add entry to `CHARTS` array in `index.html`
+10. Add matching sample data to `SAMPLE_DATA` object if new `dataKey` is needed
+
+## Adding Community Charts
+
+1. Place specs in `charts/community/<category>/` mirroring core structure
+2. Set `community: true`, `source`, `sourceUrl`, and `provider` ('vega' or 'vegaLite') in the CHARTS entry
+3. Community specs keep their original data bindings -- do not rewrite to match vegaviz conventions
+
+## Gallery (gh-pages branch)
+
+The gallery is a single `index.html` with:
+- `CHARTS` array -- one entry per chart with file path, name, category, dataKey, accent color
+- `SAMPLE_DATA` object -- keyed sample datasets for preview rendering
+- `specToEditorUrl()` -- compresses specs with pako.deflate for Vega Editor links
+- `injectData()` -- recursively walks layer/concat/hconcat/vconcat/spec/facet to inject sample data
+- `replacePlaceholders()` / `replacePbiColors()` -- resolve Deneb-specific syntax for previews
 
 ## Deneb Quick Reference
 
-- Schema URIs use v5 paths: `https://vega.github.io/schema/vega-lite/v5.json`
-- Data source: `"data": {"name": "dataset"}` -always
+- Data source: `"data": {"name": "dataset"}` -- always
 - Field names with spaces: `datum["Field Name"]`
 - Expressions: `pbiColor(0)`, `pbiFormat(val, fmt)`, `pbiPatternSVG(id, fg, bg)`
-- Schemes: `pbiColorNominal`, `pbiColorOrdinal`, `pbiColorLinear`, `pbiColorDivergent`
-- Cross-filter apply/clear: Vega only -not in Vega-Lite
-- Row limit: 10,000 default -override in visual settings
+- Color schemes: `pbiColorNominal`, `pbiColorOrdinal`, `pbiColorLinear`, `pbiColorDivergent`
+- Cross-filter: Vega only -- not available in Vega-Lite
+- Row limit: 10,000 default -- override in Deneb visual settings
 - Full reference: `ai_docs/deneb-reference.md`
