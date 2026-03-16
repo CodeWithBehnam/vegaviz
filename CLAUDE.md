@@ -1,48 +1,44 @@
 # Project: vegaviz
 
-Reusable Vega and Vega-Lite visualization specs for Power BI (Deneb), web dashboards, and standalone use.
+The ultimate open-source Vega & Vega-Lite chart gallery. Copy-paste specs for Power BI Deneb and beyond.
 
 ## Stack
 
-- Vega-Lite (primary) / Vega (when Vega-Lite can't express it)
-- JSON spec files
-- Power BI + Deneb custom visual for rendering
-- Python 3.12+ with `uv` for data prep and testing notebooks
+- Vega-Lite v5 (primary) / Vega v5 (only when Vega-Lite can't express it)
+- JSON spec files (`.vl.json` = Vega-Lite, `.vg.json` = Vega)
+- Deneb 1.9 custom visual (Vega 6.2.0 / Vega-Lite 6.4.1 runtime)
+- Python 3.12+ with `uv` for data prep notebooks
+- GitHub Pages gallery on `gh-pages` branch (single `index.html`)
 
 ## Architecture
 
 ```
 charts/
-  bar/              # Grouped, stacked, diverging bar charts
-  line/             # Line, area, actual vs target
-  scatter/          # Scatter, bubble, strip plots
-  donut/            # Donut and pie charts
-  heatmap/          # Heatmaps and matrix displays
-  gantt/            # Gantt and timeline charts
-  sankey/           # Sankey flow diagrams (Vega)
+  bar/              # Grouped, stacked, diverging
+  line/             # Line, area, sparkline, actual vs target, cumulative
+  scatter/          # Scatter, bubble, boxplot + jitter
+  donut/            # Donut and pie
+  heatmap/          # Matrix heatmap, calendar view
+  gantt/            # Gantt with today marker
+  sankey/           # Sankey flow (Vega only)
   treemap/          # Treemap hierarchies
-  kpi/              # KPI cards and gauges
-  waffle/           # Waffle and unit charts
-  bullet/           # Bullet charts
-  dumbbell/         # Dumbbell / lollipop comparisons
-  waterfall/        # Waterfall charts
-  funnel/           # Funnel charts
-  combo/            # Multi-layer composite charts
-  map/              # Geographic and choropleth
-  network/          # Force-directed graphs, org charts (Vega)
-  other/            # Anything that doesn't fit above
+  kpi/              # KPI cards with variance
+  waffle/           # Waffle percentage grids
+  bullet/           # Actual vs target ranges
+  dumbbell/         # Two-value connected dot comparison
+  waterfall/        # Cumulative pos/neg steps
+  funnel/           # Stage-based narrowing
+  combo/            # Bar + line dual axis
+  map/              # Geographic, hex-tile
+  network/          # Force-directed, org charts (Vega only)
+  other/            # Tadpole, rank/bump, anything else
 templates/
-  base/             # Vega-Lite and Vega starter templates
+  base/             # Frozen starter templates -copy, do NOT modify
   themes/           # Power BI theme configs (Segoe UI, pbiColor schemes)
-data/sample/        # Sample datasets for testing
+data/sample/        # Sample datasets (sales, timeseries, kpi)
 notebooks/          # Python notebooks for data prep
-ai_docs/            # Deneb reference docs (expressions, usermeta, limits)
+ai_docs/            # Deneb reference for agents -see deneb-reference.md
 ```
-
-Each chart directory contains:
-- `<chart-name>.vl.json` — Vega-Lite spec
-- `<chart-name>.vg.json` — Vega spec (only when Vega-Lite is insufficient)
-- `README.md` — screenshot, description, Power BI field mapping
 
 ## Commands
 
@@ -51,43 +47,38 @@ uv run python -m json.tool charts/**/*.json   # Validate JSON syntax
 uv run jupyter lab                             # Open notebooks for testing
 ```
 
-## Code Conventions
-
-- Vega-Lite specs use `$schema` pointing to the latest stable schema URL
-- All specs must work with Deneb's dataset binding (`"data": {"name": "dataset"}`)
-- Use named signals and parameters for interactivity — never hardcode filter values
-- Color palettes follow Power BI theme tokens when possible (`pbiColorX`)
-- Keep specs self-contained — no external data URLs in final chart specs
-
 ## Constraints
 
-NEVER hardcode data URLs in chart specs — Deneb injects data via `"dataset"`. Use sample data only in `data/` for testing.
-NEVER use Vega when Vega-Lite can express the same chart — Vega-Lite is simpler to maintain and more portable.
-NEVER use pixel-based sizing — use `"width": "container"` and `"height": "container"` for responsive Deneb rendering.
-ALWAYS include `$schema` in every spec file — editors and Deneb need it for validation.
-ALWAYS test specs with sample data before committing — broken JSON or missing fields silently fail in Deneb.
-ALWAYS use `uv` for Python tasks — pip/poetry are not configured.
+NEVER hardcode data URLs in chart specs -Deneb injects data via `"dataset"`. Sample data goes in `data/` only.
+NEVER use Vega when Vega-Lite can express the same chart -Vega-Lite is simpler to maintain and portable.
+NEVER use pixel-based sizing -use `"width": "container"` and `"height": "container"` for responsive rendering.
+NEVER use data transforms (fold, flatten, aggregate) if cross-filtering is needed -they break `__row__` linkage.
+NEVER invent Deneb features -check `ai_docs/deneb-reference.md` for actual API. Do not hallucinate expressions.
+NEVER modify files in `templates/base/` -they are frozen boilerplate. Copy them to start new charts.
+ALWAYS include `$schema` in every spec -editors and Deneb need it for validation.
+ALWAYS include `usermeta` block with dataset field mappings -required for Deneb template import.
+ALWAYS use `__FieldName__` placeholder pattern (double underscores) -Deneb substitutes these on import.
+ALWAYS use `uv` for Python tasks -pip/poetry are not configured.
 
 ## Adding a New Chart
 
-1. Pick the correct category directory under `charts/`
-2. Create `<chart-name>.vl.json` with `"data": {"name": "dataset"}` as the data source
-3. Use `"width": "container"` and `"height": "container"` for sizing
-4. Add sample data to `data/` if a new dataset is needed
-5. Test in a notebook or Vega Editor (https://vega.github.io/editor/)
-6. Add a `README.md` in the chart directory with a screenshot and Power BI field mapping
-7. Verify the spec renders in Deneb before committing
+1. Pick the correct category under `charts/`
+2. Copy `templates/base/vegalite-base.json` as starting point
+3. Set `"data": {"name": "dataset"}`, `"width": "container"`, `"height": "container"`
+4. Use `__FieldName__` placeholders for all field references
+5. Use `pbiColorNominal` / `pbiColor(index)` for colors -not hardcoded hex
+6. Fill in the `usermeta` block: name, description, dataset field mappings, interactivity flags
+7. Add sample data to `data/sample/` if a new dataset is needed
+8. Test in Vega Editor (https://vega.github.io/editor/) with sample data
+9. Add chart entry to `CHARTS` array in `gh-pages` branch `index.html` for gallery display
 
-## Deneb-Specific Notes
+## Deneb Quick Reference
 
-- Deneb 1.9 ships Vega 6.2.0 / Vega-Lite 6.4.1 — schema URIs still use v5 paths
-- Data source is always `"data": {"name": "dataset"}` — Deneb injects Power BI fields there
-- Use `datum["Field Name"]` syntax for field names with spaces
-- Template placeholders use `__FieldName__` pattern (double underscores)
-- Custom expressions: `pbiColor(index)`, `pbiFormat(val, fmt)`, `pbiPatternSVG(id, fg, bg)`
-- Color schemes: `pbiColorNominal`, `pbiColorOrdinal`, `pbiColorLinear`, `pbiColorDivergent`
-- Data transforms (fold, flatten, aggregate) break cross-filtering — avoid if selection needed
-- Cross-filter apply/clear is Vega-only — not available in Vega-Lite
-- Row limit: 10,000 default — can be overridden in visual settings
-- AppSource version blocks external URLs — use data URIs for images
-- Every spec needs a `usermeta` block for template import — see `ai_docs/deneb-reference.md`
+- Schema URIs use v5 paths: `https://vega.github.io/schema/vega-lite/v5.json`
+- Data source: `"data": {"name": "dataset"}` -always
+- Field names with spaces: `datum["Field Name"]`
+- Expressions: `pbiColor(0)`, `pbiFormat(val, fmt)`, `pbiPatternSVG(id, fg, bg)`
+- Schemes: `pbiColorNominal`, `pbiColorOrdinal`, `pbiColorLinear`, `pbiColorDivergent`
+- Cross-filter apply/clear: Vega only -not in Vega-Lite
+- Row limit: 10,000 default -override in visual settings
+- Full reference: `ai_docs/deneb-reference.md`
