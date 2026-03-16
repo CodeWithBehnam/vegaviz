@@ -1,0 +1,21 @@
+[
+  {"code":"W02000200","name":"Dulais Valley","q":22,"r":54},
+  {"code":"W02000201","name":"Glynneath","q":23,"r":54},
+  {"code":"W02000202","name":"Pontardawe","q":20,"r":54},
+  {"code":"W02000417","name":"Ystalyfera & Gwaun-Cae-Gurwen","q":21,"r":54},
+  {"code":"W02000203","name":"Aberdulais & Resolfen","q":23,"r":53},
+  {"code":"W02000204","name":"Cadoxton & Bryn-coch","q":22,"r":53},
+  {"code":"W02000205","name":"Neath Abbey","q":20,"r":53},
+  {"code":"W02000206","name":"Neath Town","q":21,"r":53},
+  {"code":"W02000207","name":"Cimla","q":22,"r":52},
+  {"code":"W02000208","name":"Skewen & Jersey Marine","q":18,"r":52},
+  {"code":"W02000209","name":"Glyncorrwg & Blaengwynfi","q":23,"r":52},
+  {"code":"W02000210","name":"Neath South","q":21,"r":52},
+  {"code":"W02000211","name":"Briton Ferry","q":20,"r":52},
+  {"code":"W02000212","name":"Cwmafan & Bryn","q":20,"r":51},
+  {"code":"W02000213","name":"Baglan","q":19,"r":52},
+  {"code":"W02000214","name":"Sandfields","q":19,"r":51},
+  {"code":"W02000215","name":"Aberafan","q":19,"r":50},
+  {"code":"W02000216","name":"Port Talbot East","q":20,"r":50},
+  {"code":"W02000217","name":"Port Talbot South & Margam","q":20,"r":49}
+]

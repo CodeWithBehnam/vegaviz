@@ -1,0 +1,78 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "Wales Local Authorities Hex Map",
+      "description": "Hex tile cartogram of all 22 Welsh local authorities with color encoding",
+      "author": "vegaviz",
+      "uuid": "wales-la-hex-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Value__", "name": "Value", "description": "Color intensity measure", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "description": "Wales 22 local authorities hex cartogram. Hex coordinates from ODI Leeds. In Deneb, join your data to the grid via 'code' (GSS code) or 'name'.",
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "transform": [
+    { "calculate": "datum.q * 1.5", "as": "x" },
+    { "calculate": "datum.r * 1.732 + (abs(datum.q) % 2 === 1 ? 0.866 : 0)", "as": "y" }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "text",
+        "text": "\u2B22",
+        "fontSize": 42,
+        "baseline": "middle",
+        "align": "center"
+      },
+      "encoding": {
+        "x": { "field": "x", "type": "quantitative", "axis": null, "scale": { "zero": false } },
+        "y": { "field": "y", "type": "quantitative", "axis": null, "sort": "descending", "scale": { "zero": false } },
+        "color": {
+          "field": "__Value__",
+          "type": "quantitative",
+          "scale": { "scheme": "pbiColorLinear" },
+          "legend": { "title": null }
+        },
+        "tooltip": [
+          { "field": "name", "title": "Authority" },
+          { "field": "code", "title": "GSS Code" },
+          { "field": "__Value__", "title": "Value", "format": ",.0f" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 8,
+        "baseline": "middle",
+        "align": "center",
+        "fontWeight": "bold",
+        "color": "#ffffff"
+      },
+      "encoding": {
+        "x": { "field": "x", "type": "quantitative" },
+        "y": { "field": "y", "type": "quantitative", "sort": "descending" },
+        "text": { "field": "name", "type": "nominal" }
+      }
+    }
+  ]
+}

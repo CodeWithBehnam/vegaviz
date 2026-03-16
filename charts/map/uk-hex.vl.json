@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "deneb": {
+      "build": "1.9.0.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.1"
+    },
+    "information": {
+      "name": "UK Nations Hex Map",
+      "description": "Hex tile cartogram of the United Kingdom showing England, Scotland, Wales, and Northern Ireland",
+      "author": "vegaviz",
+      "uuid": "uk-hex-001",
+      "generated": "2026-03-16T00:00:00.000Z"
+    },
+    "dataset": [
+      { "key": "__Value__", "name": "Value", "description": "Color intensity measure", "type": "numeric", "kind": "measure" }
+    ],
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "selectionMode": "simple",
+      "highlight": false,
+      "dataPointLimit": 50
+    }
+  },
+  "description": "UK nations hex cartogram. In Deneb, join your dataset to the hex grid via the 'code' field (S/E/W/NI).",
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": "container",
+  "transform": [
+    { "calculate": "datum.q * 1.5", "as": "x" },
+    { "calculate": "datum.r * 1.732 + (datum.q % 2 === 0 ? 0 : 0.866)", "as": "y" }
+  ],
+  "mark": {
+    "type": "text",
+    "text": "\u2B22",
+    "fontSize": 48,
+    "baseline": "middle",
+    "align": "center"
+  },
+  "encoding": {
+    "x": { "field": "x", "type": "quantitative", "axis": null, "scale": { "zero": false } },
+    "y": { "field": "y", "type": "quantitative", "axis": null, "sort": "descending", "scale": { "zero": false } },
+    "color": {
+      "field": "name",
+      "type": "nominal",
+      "scale": { "scheme": "pbiColorNominal" },
+      "legend": { "title": null }
+    },
+    "tooltip": [
+      { "field": "name", "title": "Nation" },
+      { "field": "__Value__", "title": "Value", "format": ",.0f" }
+    ]
+  }
+}
