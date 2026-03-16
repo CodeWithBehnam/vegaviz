@@ -12,6 +12,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 
   <style>
     :root {
@@ -541,6 +542,11 @@ const CHARTS = [
   // Other
   { file: 'charts/other/tadpole.vl.json', name: 'Tadpole Chart', category: 'comparison', desc: 'Lollipop-style chart showing change with directional tails', accent: '#FDCB6E', dataKey: 'comparison' },
   { file: 'charts/other/rank-bump.vl.json', name: 'Rank / Bump Chart', category: 'ranking', desc: 'Track ranking changes over time with connected dots', accent: '#E84393', dataKey: 'ranking' },
+  // Maps
+  { file: 'charts/map/uk-hex.vl.json', name: 'UK Nations Hex Map', category: 'map', desc: 'Hex tile cartogram of UK nations', accent: '#00B894', dataKey: 'uk-hex' },
+  { file: 'charts/map/wales-la-hex.vl.json', name: 'Wales Local Authorities Hex Map', category: 'map', desc: 'Hex cartogram of 22 Welsh local authorities', accent: '#00B894', dataKey: 'wales-hex' },
+  { file: 'charts/map/swansea-msoa-hex.vl.json', name: 'Swansea MSOA Hex Map', category: 'map', desc: 'Hex cartogram of Swansea MSOAs', accent: '#00B894', dataKey: 'swansea-hex' },
+  { file: 'charts/map/npt-msoa-hex.vl.json', name: 'NPT MSOA Hex Map', category: 'map', desc: 'Hex cartogram of Neath Port Talbot MSOAs', accent: '#00B894', dataKey: 'npt-hex' },
 
   // ========== COMMUNITY CONTRIBUTIONS ==========
   { file: 'charts/community/bar/2-level-column-chart.vl.json', name: '2-Level Column Chart', category: 'bar', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
@@ -912,6 +918,59 @@ const SAMPLE_DATA = {
     });
     return data;
   })(),
+  'uk-hex': [
+    {"code":"S","name":"Scotland","q":1,"r":0},{"code":"S","name":"Scotland","q":2,"r":0},
+    {"code":"S","name":"Scotland","q":0,"r":1},{"code":"S","name":"Scotland","q":1,"r":1},{"code":"S","name":"Scotland","q":2,"r":1},
+    {"code":"NI","name":"Northern Ireland","q":-1,"r":2},
+    {"code":"E","name":"England","q":1,"r":2},{"code":"E","name":"England","q":2,"r":2},{"code":"E","name":"England","q":3,"r":2},
+    {"code":"E","name":"England","q":0,"r":3},{"code":"E","name":"England","q":1,"r":3},{"code":"E","name":"England","q":2,"r":3},{"code":"E","name":"England","q":3,"r":3},
+    {"code":"W","name":"Wales","q":0,"r":4},{"code":"E","name":"England","q":1,"r":4},{"code":"E","name":"England","q":2,"r":4},{"code":"E","name":"England","q":3,"r":4},
+    {"code":"W","name":"Wales","q":0,"r":5},{"code":"E","name":"England","q":1,"r":5},{"code":"E","name":"England","q":2,"r":5},{"code":"E","name":"England","q":3,"r":5},
+    {"code":"E","name":"England","q":1,"r":6},{"code":"E","name":"England","q":2,"r":6},{"code":"E","name":"England","q":3,"r":6}
+  ],
+  'wales-hex': [
+    {"code":"W06000001","name":"Isle of Anglesey","q":-2,"r":12},{"code":"W06000002","name":"Gwynedd","q":-2,"r":10},
+    {"code":"W06000003","name":"Conwy","q":-1,"r":10},{"code":"W06000004","name":"Denbighshire","q":0,"r":10},
+    {"code":"W06000005","name":"Flintshire","q":0,"r":11},{"code":"W06000006","name":"Wrexham","q":1,"r":10},
+    {"code":"W06000023","name":"Powys","q":-1,"r":9},{"code":"W06000008","name":"Ceredigion","q":-2,"r":9},
+    {"code":"W06000009","name":"Pembrokeshire","q":-5,"r":6},{"code":"W06000010","name":"Carmarthenshire","q":-4,"r":6},
+    {"code":"W06000011","name":"Swansea","q":-4,"r":5},{"code":"W06000012","name":"Neath Port Talbot","q":-3,"r":5},
+    {"code":"W06000013","name":"Bridgend","q":-3,"r":6},{"code":"W06000016","name":"Rhondda Cynon Taf","q":-3,"r":7},
+    {"code":"W06000024","name":"Merthyr Tydfil","q":-2,"r":8},{"code":"W06000019","name":"Blaenau Gwent","q":0,"r":9},
+    {"code":"W06000020","name":"Torfaen","q":-2,"r":7},{"code":"W06000018","name":"Caerphilly","q":-2,"r":6},
+    {"code":"W06000014","name":"Vale of Glamorgan","q":-2,"r":4},{"code":"W06000015","name":"Cardiff","q":-2,"r":5},
+    {"code":"W06000022","name":"Newport","q":-1,"r":5},{"code":"W06000021","name":"Monmouthshire","q":-1,"r":8}
+  ],
+  'swansea-hex': [
+    {"code":"W02000168","name":"Pontarddulais","q":14,"r":55},{"code":"W02000169","name":"Clydach & Mawr","q":17,"r":55},
+    {"code":"W02000170","name":"Morriston North","q":16,"r":55},{"code":"W02000171","name":"Llangyfelach & Tircoed","q":15,"r":55},
+    {"code":"W02000172","name":"Gorseinon","q":13,"r":54},{"code":"W02000173","name":"Birchgrove","q":18,"r":55},
+    {"code":"W02000174","name":"Loughor","q":13,"r":53},{"code":"W02000175","name":"Morriston South","q":18,"r":54},
+    {"code":"W02000176","name":"Mynydd-bach","q":17,"r":54},{"code":"W02000177","name":"Llansamlet","q":19,"r":55},
+    {"code":"W02000178","name":"Penderry","q":16,"r":54},{"code":"W02000179","name":"Gowerton","q":12,"r":52},
+    {"code":"W02000180","name":"Ravenhill","q":15,"r":54},{"code":"W02000181","name":"Bon-y-maen","q":19,"r":54},
+    {"code":"W02000182","name":"Cwmbwrla","q":17,"r":53},{"code":"W02000183","name":"Landore","q":18,"r":53},
+    {"code":"W02000184","name":"Cockett","q":14,"r":54},{"code":"W02000185","name":"Llanmorlais & Three Crosses","q":11,"r":52},
+    {"code":"W02000186","name":"Townhill","q":16,"r":53},{"code":"W02000187","name":"Dunvant & Upper Killay","q":14,"r":53},
+    {"code":"W02000188","name":"St Thomas","q":19,"r":53},{"code":"W02000189","name":"Ty-coch","q":14,"r":52},
+    {"code":"W02000190","name":"Killay","q":13,"r":52},{"code":"W02000191","name":"Uplands","q":15,"r":53},
+    {"code":"W02000192","name":"Central Swansea","q":17,"r":52},{"code":"W02000193","name":"Brynmill","q":16,"r":52},
+    {"code":"W02000194","name":"Sketty","q":15,"r":52},{"code":"W02000195","name":"Mayals & Bishopston","q":12,"r":51},
+    {"code":"W02000196","name":"West Cross","q":14,"r":51},{"code":"W02000197","name":"West Gower","q":11,"r":51},
+    {"code":"W02000198","name":"Mumbles & Newton","q":13,"r":51}
+  ],
+  'npt-hex': [
+    {"code":"W02000200","name":"Dulais Valley","q":22,"r":54},{"code":"W02000201","name":"Glynneath","q":23,"r":54},
+    {"code":"W02000202","name":"Pontardawe","q":20,"r":54},{"code":"W02000417","name":"Ystalyfera & Gwaun-Cae-Gurwen","q":21,"r":54},
+    {"code":"W02000203","name":"Aberdulais & Resolven","q":23,"r":53},{"code":"W02000204","name":"Cadoxton & Bryn-coch","q":22,"r":53},
+    {"code":"W02000205","name":"Neath Abbey","q":20,"r":53},{"code":"W02000206","name":"Neath Town","q":21,"r":53},
+    {"code":"W02000207","name":"Cimla","q":22,"r":52},{"code":"W02000208","name":"Skewen & Jersey Marine","q":18,"r":52},
+    {"code":"W02000209","name":"Glyncorrwg & Blaengwynfi","q":23,"r":52},{"code":"W02000210","name":"Neath South","q":21,"r":52},
+    {"code":"W02000211","name":"Briton Ferry","q":20,"r":52},{"code":"W02000212","name":"Cwmafan & Bryn","q":20,"r":51},
+    {"code":"W02000213","name":"Baglan","q":19,"r":52},{"code":"W02000214","name":"Sandfields","q":19,"r":51},
+    {"code":"W02000215","name":"Aberafan","q":19,"r":50},{"code":"W02000216","name":"Port Talbot East","q":20,"r":50},
+    {"code":"W02000217","name":"Port Talbot South & Margam","q":20,"r":49}
+  ],
   ranking: [
     { Category: 'Alpha', Month: 'Jan', Sales: 1 },
     { Category: 'Alpha', Month: 'Feb', Sales: 2 },
@@ -1242,6 +1301,18 @@ async function copySpec(idx, btn) {
   }, 2000);
 }
 
+// Compress a spec with pako and return a Vega Editor URL
+function specToEditorUrl(spec, mode) {
+  mode = mode || 'vega-lite';
+  const jsonStr = JSON.stringify(spec);
+  const compressed = pako.deflate(new TextEncoder().encode(jsonStr));
+  let binary = '';
+  for (let i = 0; i < compressed.length; i++) {
+    binary += String.fromCharCode(compressed[i]);
+  }
+  return `https://vega.github.io/editor/#/url/${mode}/${btoa(binary)}`;
+}
+
 async function viewCode(idx) {
   const spec = await fetchSpec(idx);
   const chart = CHARTS[idx];
@@ -1254,7 +1325,7 @@ async function viewCode(idx) {
   };
   const isVega = chart.provider === 'vega';
   const mode = isVega ? 'vega' : 'vega-lite';
-  const editorUrl = `https://vega.github.io/editor/#/url/${mode}/${btoa(unescape(encodeURIComponent(JSON.stringify(stripUsermeta(spec)))))}`;
+  const editorUrl = specToEditorUrl(stripUsermeta(spec), mode);
   document.getElementById('modalVegaEditor').href = editorUrl;
 
   const sourceBtn = document.getElementById('modalSource');
@@ -1271,11 +1342,9 @@ async function viewCode(idx) {
 function openEditor(idx) {
   fetchSpec(idx).then(spec => {
     const chart = CHARTS[idx];
-    const clean = stripUsermeta(spec);
     const isVega = chart.provider === 'vega';
     const mode = isVega ? 'vega' : 'vega-lite';
-    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(clean))));
-    window.open(`https://vega.github.io/editor/#/url/${mode}/${encoded}`, '_blank');
+    window.open(specToEditorUrl(stripUsermeta(spec), mode), '_blank');
   });
 }
 
