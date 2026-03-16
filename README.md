@@ -86,6 +86,21 @@ docs/            Screenshots and assets
 - Power BI theme colors via `pbiColorNominal`, `pbiColor(index)`, etc.
 - Template placeholders use `__FieldName__` pattern for field mapping
 
+## Inspiration & References
+
+This project builds on the incredible work of the Deneb and Vega communities. The following repos and sites were studied for chart patterns, techniques, and Deneb conventions:
+
+| Resource | Description |
+|----------|-------------|
+| [deneb-viz/deneb](https://github.com/deneb-viz/deneb) | The Deneb custom visual for Power BI. Source of truth for data binding, `usermeta` schema, custom expressions (`pbiColor`, `pbiFormat`), and runtime versions. |
+| [PBI-David/Deneb-Showcase](https://github.com/PBI-David/Deneb-Showcase) | 30+ advanced Deneb visualizations including sankey, parliament, force-directed, and waffle charts. |
+| [PBIQueryous/Deneb](https://github.com/PBIQueryous/Deneb) | Community templates for bar, line, heatmap, IBCS, donut, and dumbbell charts. |
+| [thysvdw.github.io](https://thysvdw.github.io/) | 25+ Deneb chart tutorials covering sparklines, bullet charts, boxplots, rank/bump, calendar views, tadpole, and gantt charts. |
+| [vega/vega-lite](https://github.com/vega/vega-lite) | The Vega-Lite specification and compiler. |
+| [vega/vega](https://github.com/vega/vega) | The Vega visualization grammar. |
+
+If you have a Deneb chart repo or tutorial that should be listed here, open an issue or PR.
+
 ## Contributing
 
 1. Pick a chart type from the `charts/` directory (or create a new category)
