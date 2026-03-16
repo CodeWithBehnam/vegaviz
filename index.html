@@ -82,13 +82,14 @@
     .badge--accent { background: var(--accent); color: #fff; }
     .badge--accent2 { background: var(--accent2); }
     .badge--accent4 { background: var(--accent4); color: #fff; }
+    .badge--community { background: #9B59B6; color: #fff; }
 
     /* TOOLBAR */
     .toolbar {
       border-bottom: var(--border-w) solid var(--border);
       padding: 1rem 2rem;
       display: flex;
-      gap: 1rem;
+      gap: 0.5rem;
       align-items: center;
       flex-wrap: wrap;
       background: var(--surface);
@@ -110,9 +111,9 @@
     .search-box::placeholder { color: #999; }
 
     .filter-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 0.75rem;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       font-weight: 700;
       border: var(--border-w) solid var(--border);
       background: var(--surface);
@@ -135,6 +136,25 @@
       font-weight: 700;
       color: var(--text-muted);
       white-space: nowrap;
+    }
+
+    /* SOURCE FILTER ROW */
+    .source-toolbar {
+      border-bottom: 2px solid var(--border);
+      padding: 0.5rem 2rem;
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+      flex-wrap: wrap;
+      background: #f5f3ec;
+      font-size: 0.75rem;
+    }
+    .source-toolbar label {
+      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      margin-right: 0.25rem;
     }
 
     /* GRID */
@@ -172,16 +192,48 @@
       font-weight: 700;
       letter-spacing: -0.5px;
     }
+    .card-badges {
+      display: flex;
+      gap: 0.35rem;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
     .card-category {
       font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
-      padding: 0.2rem 0.5rem;
+      padding: 0.15rem 0.45rem;
       border: 2px solid var(--border);
       white-space: nowrap;
-      flex-shrink: 0;
     }
+    .card-source {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border: 2px solid #9B59B6;
+      color: #9B59B6;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .card-source:hover {
+      background: #9B59B6;
+      color: #fff;
+    }
+    .card-provider {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border: 2px solid;
+      white-space: nowrap;
+    }
+    .card-provider.vega { border-color: #E74C3C; color: #E74C3C; }
+    .card-provider.vegalite { border-color: #3498DB; color: #3498DB; }
     .card-desc {
       padding: 0 1.25rem 0.75rem;
       font-size: 0.85rem;
@@ -231,6 +283,7 @@
     .btn--primary { background: var(--accent); color: #fff; }
     .btn--secondary { background: var(--accent3); }
     .btn--code { background: var(--accent2); }
+    .btn--source { background: #EDE7F6; }
 
     .btn-copied {
       background: var(--text) !important;
@@ -337,6 +390,48 @@
       font-size: 0.8rem;
     }
 
+    /* CREDITS SECTION */
+    .credits {
+      border-bottom: var(--border-w) solid var(--border);
+      padding: 1.5rem 2rem;
+      background: #f5f3ec;
+    }
+    .credits h3 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .credits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.5rem;
+    }
+    .credit-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      font-size: 0.8rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.1s;
+    }
+    .credit-item:hover {
+      box-shadow: 3px 3px 0 var(--shadow);
+      transform: translate(-1px, -1px);
+    }
+    .credit-count {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.75rem;
+      background: var(--accent3);
+      padding: 0.1rem 0.4rem;
+      border: 2px solid var(--border);
+    }
+
     @media (max-width: 500px) {
       .hero h1 { font-size: 2.2rem; }
       .gallery { grid-template-columns: 1fr; }
@@ -350,20 +445,32 @@
     <h1>vega<span>viz</span></h1>
     <p>The only chart gallery you need. Copy-paste Vega-Lite specs into Power BI Deneb or anywhere else.</p>
     <div class="hero-badges">
-      <span class="badge badge--accent">23 Charts</span>
+      <span class="badge badge--accent" id="totalBadge">269 Charts</span>
+      <span class="badge badge--community">10 Sources</span>
       <span class="badge badge--accent2">Deneb Ready</span>
       <span class="badge badge--accent4">Vega-Lite v5</span>
       <span class="badge">Open Source</span>
     </div>
   </header>
 
-  <div class="toolbar">
-    <input type="text" class="search-box" id="search" placeholder="Search charts...">
+  <div class="toolbar" id="toolbar">
+    <input type="text" class="search-box" id="search" placeholder="Search charts, categories, or sources...">
     <button class="filter-btn active" data-filter="all">All</button>
     <span class="chart-count" id="chartCount"></span>
   </div>
 
+  <div class="source-toolbar" id="sourceToolbar">
+    <label>Source:</label>
+    <button class="filter-btn active" data-source="all" style="font-size:0.72rem;padding:0.25rem 0.5rem">All</button>
+    <button class="filter-btn" data-source="vegaviz" style="font-size:0.72rem;padding:0.25rem 0.5rem">vegaviz</button>
+  </div>
+
   <main class="gallery" id="gallery"></main>
+
+  <section class="credits" id="credits">
+    <h3>Community Sources & Attribution</h3>
+    <div class="credits-grid" id="creditsGrid"></div>
+  </section>
 
   <div class="modal-overlay" id="modal">
     <div class="modal">
@@ -377,6 +484,7 @@
       <div class="modal-footer">
         <button class="btn btn--primary" id="modalCopy">Copy JSON</button>
         <a class="btn btn--secondary" id="modalVegaEditor" href="#" target="_blank" rel="noopener">Open in Vega Editor</a>
+        <a class="btn btn--source" id="modalSource" href="#" target="_blank" rel="noopener" style="display:none">View Source</a>
       </div>
     </div>
   </div>
@@ -395,6 +503,7 @@
 const REPO_RAW = 'https://raw.githubusercontent.com/CodeWithBehnam/vegaviz/main';
 
 const CHARTS = [
+  // ========== VEGAVIZ ORIGINALS ==========
   // Bar
   { file: 'charts/bar/grouped-bar.vl.json', name: 'Grouped Bar Chart', category: 'bar', desc: 'Side-by-side bars grouped by category with color encoding', accent: '#FF6B35', dataKey: 'general' },
   { file: 'charts/bar/stacked-bar.vl.json', name: 'Stacked Bar Chart', category: 'bar', desc: 'Stacked bars for part-to-whole comparison', accent: '#FF6B35', dataKey: 'general' },
@@ -432,6 +541,254 @@ const CHARTS = [
   // Other
   { file: 'charts/other/tadpole.vl.json', name: 'Tadpole Chart', category: 'comparison', desc: 'Lollipop-style chart showing change with directional tails', accent: '#FDCB6E', dataKey: 'comparison' },
   { file: 'charts/other/rank-bump.vl.json', name: 'Rank / Bump Chart', category: 'ranking', desc: 'Track ranking changes over time with connected dots', accent: '#E84393', dataKey: 'ranking' },
+
+  // ========== COMMUNITY CONTRIBUTIONS ==========
+  { file: 'charts/community/bar/2-level-column-chart.vl.json', name: '2-Level Column Chart', category: 'bar', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/bar/a-technique-to-dynamically-adjust-the-y-axis-behavior-based.vl.json', name: 'A technique to dynamically adjust the Y-axis behavior based ', category: 'bar', desc: 'Source: VL Techniques (Giammaria)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'VL Techniques (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Lite-Techniques', provider: 'vegaLite' },
+  { file: 'charts/community/bar/actual-vs-predicted-team-positions.vl.json', name: 'Actual vs Predicted Team Positions', category: 'bar', desc: 'by Shad Frigui | Source: Vega-Lite (Shad Frigui)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/bar/actuals-vs-forecasts-lipstick-column-chart.vl.json', name: 'Actuals vs Forecasts Lipstick Column Chart', category: 'bar', desc: 'by Shad Frigui | Source: Vega-Lite (Shad Frigui)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/bar/area-chart-with-min-max-variance.vl.json', name: 'Area Chart with Min-Max Variance', category: 'bar', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/bar/bar-chart-with-multiple-labels.vl.json', name: 'Bar Chart with multiple labels', category: 'bar', desc: 'by Alex Dean, Allgeier (Schweiz) AG | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/barvariance-v1.vl.json', name: 'BarVariance_v1', category: 'bar', desc: 'by PBIQueryous | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/column-chart-facet-plot-with-us-state-coordinates.vl.json', name: 'Column Chart Facet Plot with US State Coordinates', category: 'bar', desc: 'by Daniel Marsh-Patrick | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/column-with-images.vl.json', name: 'Column With Images', category: 'bar', desc: 'Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/column-with-images-v2.vl.json', name: 'Column With Images V2', category: 'bar', desc: 'Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/compact-bar-chart-with-cross-highlight-and-cross-filter.vl.json', name: 'Compact Bar Chart with Cross-Highlight and Cross-Filter', category: 'bar', desc: 'by Daniel Marsh-Patrick | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-7.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'bar', desc: 'Source: Deneb Showcase (David)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/bar/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-8.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'bar', desc: 'Source: Deneb Showcase (David)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/bar/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-9.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'bar', desc: 'Source: Deneb Showcase (David)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/bar/deneb-ibcs-actual-vs-budget-chart-and-relativevariance.vl.json', name: 'Deneb_IBCS_Actual_vs_Budget_Chart_and_RelativeVariance', category: 'bar', desc: 'by PBIQueryous | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/deneb-ibcs-actual-vs-budget-v3.vl.json', name: 'Deneb_IBCS_Actual_vs_Budget_v3', category: 'bar', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/deviation-icicle.vl.json', name: 'Deviation Icicle', category: 'bar', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/drop-deviation.vl.json', name: 'Drop Deviation', category: 'bar', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/dynamic-labels.vl.json', name: 'Dynamic Labels', category: 'bar', desc: 'Source: VL Techniques (Giammaria)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'VL Techniques (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Lite-Techniques', provider: 'vegaLite' },
+  { file: 'charts/community/bar/faceted-bar.vl.json', name: 'Faceted Bar', category: 'bar', desc: 'Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/global-military-spending-2022.vg.json', name: 'Global Military Spending 2022', category: 'bar', desc: 'Source: Deneb Showcase (David)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/bar/global-military-spending-2022-1.vg.json', name: 'Global Military Spending 2022', category: 'bar', desc: 'Source: Deneb Showcase (David)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/bar/hover-and-highlight.vl.json', name: 'Hover And Highlight', category: 'bar', desc: 'Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/ibcs-based-three-tier-chart-to-show-1-absolute-values-2.vg.json', name: 'IBCS based three-tier chart to show: 1) absolute values, 2) ', category: 'bar', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/bar/ibcs-style-deneb.vl.json', name: 'IBCS-style Deneb', category: 'bar', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/ibcs-style-performance-visual.vl.json', name: 'IBCS-style Performance Visual', category: 'bar', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/bar/ibcs-chart-and-variance.vl.json', name: 'IBCS_Chart_and_Variance', category: 'bar', desc: 'by PBIQueryous | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/ibcs-column-chart.vl.json', name: 'IBCS_Column_Chart', category: 'bar', desc: 'by PBI-Queryous | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/ibcs-v2.vl.json', name: 'IBCS_v2', category: 'bar', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/macro-targets.vg.json', name: 'Macro Targets', category: 'bar', desc: 'Source: Vega Visuals (Giammaria)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Vega Visuals (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Visuals', provider: 'vega' },
+  { file: 'charts/community/bar/monthly-variance-analysis.vl.json', name: 'Monthly Variance Analysis', category: 'bar', desc: 'by Shad Frigui | Source: Vega-Lite (Shad Frigui)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/bar/monthly-variance-analysis-1.vl.json', name: 'Monthly Variance Analysis', category: 'bar', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/bar/monthly-variance-analysis-online-editor.vl.json', name: 'Monthly Variance Analysis Online Editor', category: 'bar', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/bar/multicolour-dynamictext.vl.json', name: 'MultiColour_DynamicText', category: 'bar', desc: 'by PBIQueryous | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/nobel-prize-laureates.vl.json', name: 'Nobel Prize Laureates', category: 'bar', desc: 'Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/premier-league-predictions.vl.json', name: 'Premier League Predictions', category: 'bar', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/bar/reverse-bar-chart.vl.json', name: 'Reverse Bar Chart', category: 'bar', desc: 'by Mike Carlo | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/scrollbar-example.vg.json', name: 'Scrollbar Example', category: 'bar', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/bar/set-axis-scale.vl.json', name: 'Set Axis Scale', category: 'bar', desc: 'Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/simple-bar-chart.vl.json', name: 'Simple Bar Chart', category: 'bar', desc: 'by Daniel Marsh-Patrick | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/simple-fixed-height-bar.vl.json', name: 'Simple Fixed Height Bar', category: 'bar', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/space-saving-bar-chart-with-top-n-and-others.vl.json', name: 'Space-Saving Bar Chart with Top N and Others', category: 'bar', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/bar/spec-4.vl.json', name: 'Spec', category: 'bar', desc: 'Source: Deneb Showcase (David)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/bar/stacked-bar.vl.json', name: 'Stacked bar (%)', category: 'bar', desc: 'by Juan Bohorquez | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/stacked-bar-with-two-categories.vl.json', name: 'Stacked bar with two categories', category: 'bar', desc: 'by Oscar Martinez (Valerock) | Source: PowerBI Tips', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/bar/variance-analysis.vl.json', name: 'Variance Analysis', category: 'bar', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/bar/variance-percentage-column-chart.vl.json', name: 'Variance Percentage Column Chart', category: 'bar', desc: 'by Shad Frigui | Source: Vega-Lite (Shad Frigui)', accent: '#FF6B35', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/bar/no-name-provided.vl.json', name: '[No Name Provided]', category: 'bar', desc: 'by [No Author Details Provided] | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bar/no-name-provided-1.vl.json', name: '[No Name Provided]', category: 'bar', desc: 'by [No Author Details Provided] | Source: PBI DataVizzle', accent: '#FF6B35', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/bullet/actuals-vs-forecasts-bullet-like-chart.vl.json', name: 'Actuals vs Forecasts Bullet-like Chart', category: 'bullet', desc: 'by Shad Frigui | Source: Vega-Lite (Shad Frigui)', accent: '#636E72', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/bullet/bullet-chart.vl.json', name: 'Bullet Chart', category: 'bullet', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#636E72', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/combo/an-example-of-vega-visualization-that-automatically-switches.vg.json', name: 'An example of Vega visualization that automatically switches', category: 'combo', desc: 'Source: DataViz Vega (Andrzej)', accent: '#A29BFE', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/combo/bar-line-combo.vl.json', name: 'Bar Line Combo', category: 'combo', desc: 'Source: PBI DataVizzle', accent: '#A29BFE', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/combo/image-labelled-line-column-combo.vl.json', name: 'Image Labelled Line Column Combo', category: 'combo', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#A29BFE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/combo/temperature-c-vs-energy-consumption-kwh.vg.json', name: 'Temperature (°C) vs Energy Consumption (kWh)', category: 'combo', desc: 'Source: Vega Visuals (Giammaria)', accent: '#A29BFE', dataKey: 'general', community: true, source: 'Vega Visuals (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Visuals', provider: 'vega' },
+  { file: 'charts/community/donut/donut-4.vl.json', name: '% Donut 4', category: 'donut', desc: 'by Juan Bohorquez | Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/of-female-attorneys-in-law-firms.vg.json', name: '% of Female Attorneys in Law Firms', category: 'donut', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FF4081', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/donut/advanced-donut.vl.json', name: 'Advanced Donut', category: 'donut', desc: 'Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/aesthetic-donut.vl.json', name: 'Aesthetic Donut', category: 'donut', desc: 'by PBI Guy | Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/automatic-label-rotation.vl.json', name: 'Automatic Label Rotation', category: 'donut', desc: 'Source: VL Techniques (Giammaria)', accent: '#FF4081', dataKey: 'general', community: true, source: 'VL Techniques (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Lite-Techniques', provider: 'vegaLite' },
+  { file: 'charts/community/donut/circular-radial-variation-2.vl.json', name: 'Circular_Radial_Variation_2', category: 'donut', desc: 'by Pha Nguyen | Source: PowerBI Tips', accent: '#FF4081', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/donut/circular-radial-variation-3.vl.json', name: 'Circular_Radial_Variation_3', category: 'donut', desc: 'by Pha Nguyen | Source: PowerBI Tips', accent: '#FF4081', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/donut/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-2.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'donut', desc: 'Source: Deneb Showcase (David)', accent: '#FF4081', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/donut/donut-with-non-overlapping-labels-and-topn-others-function.vg.json', name: 'Donut with non-overlapping labels and topN & others function', category: 'donut', desc: 'Source: Deneb Showcase (David)', accent: '#FF4081', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/donut/donut-v3.vl.json', name: 'Donut_v3', category: 'donut', desc: 'by PBIQueryous | Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/donut-v4.vl.json', name: 'Donut_v4', category: 'donut', desc: 'by PBIQueryous | Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/dynamic-font-colors.vl.json', name: 'Dynamic Font Colors', category: 'donut', desc: 'Source: VL Techniques (Giammaria)', accent: '#FF4081', dataKey: 'general', community: true, source: 'VL Techniques (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Lite-Techniques', provider: 'vegaLite' },
+  { file: 'charts/community/donut/ibcs-donut.vl.json', name: 'IBCS Donut', category: 'donut', desc: 'by PBI QUERYOUS | Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/ibcs-style-donut.vl.json', name: 'IBCS-Style Donut', category: 'donut', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/multi-layered-raw.vl.json', name: 'Multi Layered Raw', category: 'donut', desc: 'Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/orbital-chart.vl.json', name: 'Orbital Chart', category: 'donut', desc: 'by Pha Nguyen | Source: PowerBI Tips', accent: '#FF4081', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/donut/patterned-doughnut.vl.json', name: 'Patterned Doughnut', category: 'donut', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FF4081', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/donut/pie-slice-pbiguy.vl.json', name: 'Pie Slice Pbiguy', category: 'donut', desc: 'Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/ring-chart.vl.json', name: 'Ring Chart', category: 'donut', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/donut/ring-chart-1.vl.json', name: 'Ring Chart', category: 'donut', desc: 'by Kerry Kolosko | Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/test-donut.vl.json', name: 'Test Donut', category: 'donut', desc: 'Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/donut/vega-donut.vg.json', name: 'Vega Donut', category: 'donut', desc: 'Source: PBI DataVizzle', accent: '#FF4081', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vega' },
+  { file: 'charts/community/dumbbell/dumbbell-chart.vl.json', name: 'Dumbbell Chart', category: 'dumbbell', desc: 'by [No Author Details Provided] | Source: PBI DataVizzle', accent: '#0984E3', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/dumbbell/dumbbell-chart-1.vl.json', name: 'Dumbbell Chart', category: 'dumbbell', desc: 'by Pha Nguyen | Source: PBI DataVizzle', accent: '#0984E3', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/gantt/dl0k-pbi-pmo-toolkit-gantt-chart-modified-from-david-bacci.vg.json', name: 'DL0K-pbi PMO_toolkit: Gantt chart, modified from David Bacci', category: 'gantt', desc: 'Source: PMO Toolkit', accent: '#00B894', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vega' },
+  { file: 'charts/community/gantt/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-4.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'gantt', desc: 'Source: Deneb Showcase (David)', accent: '#00B894', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/gantt/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-5.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'gantt', desc: 'Source: Deneb Showcase (David)', accent: '#00B894', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/gantt/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-6.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'gantt', desc: 'Source: Deneb Showcase (David)', accent: '#00B894', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/gantt/simple-gantt-chart.vl.json', name: 'Simple Gantt Chart', category: 'gantt', desc: 'by Dion Jones | Source: PowerBI Tips', accent: '#00B894', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/gantt/visualization.vg.json', name: 'Visualization', category: 'gantt', desc: 'Source: Vega Visuals (Giammaria)', accent: '#00B894', dataKey: 'general', community: true, source: 'Vega Visuals (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Visuals', provider: 'vega' },
+  { file: 'charts/community/gantt/visualization-1.vg.json', name: 'Visualization', category: 'gantt', desc: 'Source: Vega Visuals (Giammaria)', accent: '#00B894', dataKey: 'general', community: true, source: 'Vega Visuals (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Visuals', provider: 'vega' },
+  { file: 'charts/community/heatmap/custom-matrix.vl.json', name: 'Custom Matrix', category: 'heatmap', desc: 'Source: PBI DataVizzle', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/customized-heatmap-with-category20c-color-scheme.vl.json', name: 'Customized Heatmap with category20c Color Scheme', category: 'heatmap', desc: 'by Pha Nguyen | Source: PowerBI Tips', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/distribution-with-bands.vl.json', name: 'Distribution with Bands', category: 'heatmap', desc: 'by Daniel Marsh-Patrick | Source: PowerBI Tips', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/heat-map-with-marginal-bar-and-column-charts.vl.json', name: 'Heat Map with Marginal Bar and Column Charts', category: 'heatmap', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/heatmap-horizontal.vl.json', name: 'HeatMap - Horizontal', category: 'heatmap', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/heatmap-vertical.vl.json', name: 'HeatMap - Vertical', category: 'heatmap', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/heatmap-vegalite.vl.json', name: 'HeatMap_VegaLite', category: 'heatmap', desc: 'by PBIQueryous | Source: PBI DataVizzle', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/heatmap-with-bars.vl.json', name: 'Heatmap with bars', category: 'heatmap', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/inherent-risk-matrix-before-controls.vl.json', name: 'Inherent Risk Matrix (Before Controls)', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/inherent-risk-matrix-before-controls-1.vl.json', name: 'Inherent Risk Matrix (Before Controls)', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/raci-matrix.vl.json', name: 'RACI Matrix', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/residual-risk-matrix-after-controls.vl.json', name: 'Residual Risk Matrix (After Controls)', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/residual-risk-matrix-after-controls-1.vl.json', name: 'Residual Risk Matrix (After Controls)', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/residual-risk-matrix-after-controls-2.vl.json', name: 'Residual Risk Matrix (After Controls)', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/residual-risk-matrix-after-controls-3.vl.json', name: 'Residual Risk Matrix (After Controls)', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/risk-matrix.vl.json', name: 'Risk Matrix', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/risk-matrix-1.vl.json', name: 'Risk Matrix', category: 'heatmap', desc: 'Source: PMO Toolkit', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/spec.vl.json', name: 'Spec', category: 'heatmap', desc: 'Source: Deneb Showcase (David)', accent: '#FF9F43', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/word-wrapping.vl.json', name: 'Word Wrapping', category: 'heatmap', desc: 'Source: VL Techniques (Giammaria)', accent: '#FF9F43', dataKey: 'general', community: true, source: 'VL Techniques (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Lite-Techniques', provider: 'vegaLite' },
+  { file: 'charts/community/heatmap/heatmap-with-bars-themed.vl.json', name: 'heatmap with bars - themed', category: 'heatmap', desc: 'by Injae Park | Source: PowerBI Tips', accent: '#FF9F43', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/kpi/conditional-kpi-cards.vl.json', name: 'Conditional KPI Cards', category: 'kpi', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#E17055', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/kpi/linear-gauge-option-1-units-with-performance-zones-and-point.vl.json', name: 'Linear Gauge - Option 1 - Units (with performance zones and pointer)', category: 'kpi', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#E17055', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/kpi/linear-gauge-option-2-units-with-performance-zones.vl.json', name: 'Linear Gauge - Option 2 - Units (with performance zones)', category: 'kpi', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#E17055', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/kpi/linear-gauge-option-3-units-basic.vl.json', name: 'Linear Gauge - Option 3 - Units (basic)', category: 'kpi', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#E17055', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/kpi/progress-bar-v1.vl.json', name: 'Progress Bar V1', category: 'kpi', desc: 'Source: PBI DataVizzle', accent: '#E17055', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/kpi/progressbar.vg.json', name: 'Progressbar', category: 'kpi', desc: 'Source: PBI DataVizzle', accent: '#E17055', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vega' },
+  { file: 'charts/community/line/-1.vg.json', name: '', category: 'line', desc: 'Source: DataViz Vega (Andrzej)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/line/100-stacked-interactive-hover.vl.json', name: '100% Stacked Interactive Hover', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/abortion-appointment-wait-times.vl.json', name: 'Abortion Appointment Wait Times', category: 'line', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/line/abortion-appointment-wait-times-online-editor.vl.json', name: 'Abortion Appointment Wait Times Online Editor', category: 'line', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/line/area-between-lines.vl.json', name: 'Area between Lines', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/average-daily-number-of-bicycles-by-month-and-average-temper.vg.json', name: 'Average daily number of bicycles by month and average temperature', category: 'line', desc: 'Source: DataViz Vega (Andrzej)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/line/box-office-vs-gaming-revenues-online-editor.vl.json', name: 'Box Office Vs Gaming Revenues Online Editor', category: 'line', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/line/du-bois-challenge-2022-graph-3-online-editor.vl.json', name: 'Du Bois Challenge 2022 Graph 3 Online Editor', category: 'line', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/line/du-bois-challenge-2022-graph-3-online-editor-1.vl.json', name: 'Du Bois Challenge 2022 Graph 3 Online Editor', category: 'line', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/line/forecast-accuracy.vl.json', name: 'Forecast Accuracy', category: 'line', desc: 'by Alex Dean, Allgeier (Schweiz) AG | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/forecast-patterned.vl.json', name: 'Forecast Patterned', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/joy-plot-independent-scales.vl.json', name: 'Joy Plot Independent Scales', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/line-chart-cumulative.vl.json', name: 'Line Chart Cumulative', category: 'line', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/line/pattern-area-between-lines.vl.json', name: 'Pattern Area between Lines', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/premier-league-predictions-online-editor.vl.json', name: 'Premier League Predictions Online Editor', category: 'line', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/line/project-timeline-with-slicer-driven-date-grain-measure-cont.vl.json', name: 'Project timeline with slicer-driven date grain, measure-cont', category: 'line', desc: 'Source: PMO Toolkit', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PMO Toolkit', sourceUrl: 'https://github.com/DL0K-pbi/PMO_toolkit', provider: 'vegaLite' },
+  { file: 'charts/community/line/reproduction-of-the-fan-chart-initially-designed-by-jorge.vg.json', name: 'Reproduction of the \\'fan chart\\' initially designed by Jorge ', category: 'line', desc: 'Source: DataViz Vega (Andrzej)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/line/slope-multi.vl.json', name: 'Slope Multi', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/slope-with-series-labels.vl.json', name: 'Slope with Series Labels', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/slope-with-series-labels-1.vl.json', name: 'Slope with Series Labels', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/snapshot-linechart.vl.json', name: 'Snapshot LineChart', category: 'line', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/line/stream-graph.vl.json', name: 'Stream Graph', category: 'line', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/temperature-distribution-chart.vl.json', name: 'Temperature Distribution Chart', category: 'line', desc: 'by Daniel Marsh-Patrick | Source: PowerBI Tips', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/line/two-vertically-concatenated-charts-that-show-a-histogram-of.vl.json', name: 'Two vertically concatenated charts that show a histogram of ', category: 'line', desc: 'Source: VL Techniques (Giammaria)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'VL Techniques (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Lite-Techniques', provider: 'vegaLite' },
+  { file: 'charts/community/line/visualization-by-ying-fu-aka-flynnxx1-https-www-linkedi-5.vg.json', name: 'Visualization by Ying Fu aka \\'Flynnxx1\\' (https://www.linkedi', category: 'line', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/line/the-world-in-2100.vl.json', name: 'the_world_in_2100', category: 'line', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#4ECDC4', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/map/-2.vg.json', name: '', category: 'map', desc: 'Source: DataViz Vega (Andrzej)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/map/an-example-of-a-custom-tooltip-on-a-map.vg.json', name: 'An example of a custom tooltip (on a map)', category: 'map', desc: 'Source: DataViz Vega (Andrzej)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/map/covid-19-cases-in-the-uk.vg.json', name: 'COVID-19 Cases in the UK', category: 'map', desc: 'Source: Deneb Showcase (David)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/map/county-unemployment.vg.json', name: 'County Unemployment', category: 'map', desc: 'Source: DataViz Vega (Andrzej)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/map/hex-map-with-sparkline.vl.json', name: 'Hex-map with sparkline', category: 'map', desc: 'by Pha Nguyen | Source: PowerBI Tips', accent: '#2ECC71', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/map/how-far-is-school-by-bike.vg.json', name: 'How far is school by bike?', category: 'map', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/map/occupations-of-negroes-and-whites-in-georgia.vl.json', name: 'OCCUPATIONS OF NEGROES AND WHITES IN GEORGIA .', category: 'map', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/map/sales-by-state.vl.json', name: 'Sales by State', category: 'map', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/map/sales-by-state-1.vl.json', name: 'Sales by State', category: 'map', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/map/spike-map.vl.json', name: 'Spike Map', category: 'map', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#2ECC71', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/map/visualization-by-ying-fu-aka-flynnxx1-https-www-linkedi-1.vg.json', name: 'Visualization by Ying Fu aka \\'Flynnxx1\\' (https://www.linkedi', category: 'map', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/map/visualization-by-ying-fu-aka-flynnxx1-https-www-linkedi-3.vg.json', name: 'Visualization by Ying Fu aka \\'Flynnxx1\\' (https://www.linkedi', category: 'map', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#2ECC71', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/network/big-five-mass-extinctions-in-earth-s-history.vg.json', name: '\\'Big Five\\' Mass Extinctions in Earth\\'s History', category: 'network', desc: 'Source: Vega Visuals (Giammaria)', accent: '#9B59B6', dataKey: 'general', community: true, source: 'Vega Visuals (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Visuals', provider: 'vega' },
+  { file: 'charts/community/network/a-beeswarm-chart-example-that-uses-a-force-directed-layout-t.vg.json', name: 'A beeswarm chart example that uses a force-directed layout t', category: 'network', desc: 'Source: Deneb Showcase (David)', accent: '#9B59B6', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/network/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-3.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'network', desc: 'Source: Deneb Showcase (David)', accent: '#9B59B6', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/network/radial-tree.vg.json', name: 'Radial Tree', category: 'network', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#9B59B6', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vega' },
+  { file: 'charts/community/network/this-is-an-extension-of-the-typical-circle-packing-layout-a.vg.json', name: 'This is an extension of the typical Circle Packing layout. A', category: 'network', desc: 'Source: Vega Visuals (Giammaria)', accent: '#9B59B6', dataKey: 'general', community: true, source: 'Vega Visuals (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Visuals', provider: 'vega' },
+  { file: 'charts/community/network/tidy-tree-area.vg.json', name: 'Tidy Tree Area', category: 'network', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#9B59B6', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vega' },
+  { file: 'charts/community/network/tidy-tree-area-bar.vg.json', name: 'Tidy Tree Area Bar', category: 'network', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#9B59B6', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vega' },
+  { file: 'charts/community/network/zoomable-collapsable-tree-by-david-bacci-https-www-linke.vg.json', name: 'Zoomable, collapsable tree by David Bacci: https://www.linke', category: 'network', desc: 'Source: Deneb Showcase (David)', accent: '#9B59B6', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/network/zoomable-collapsable-tree-by-david-bacci-https-www-linke-1.vg.json', name: 'Zoomable, collapsable tree by David Bacci: https://www.linke', category: 'network', desc: 'Source: Deneb Showcase (David)', accent: '#9B59B6', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/.vg.json', name: '', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/2020-us-presidential-election.vg.json', name: '2020 US Presidential Election', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/a-demonstration-of-how-a-combination-of-the-sequence-expre.vl.json', name: 'A demonstration of how a combination of the sequence() expre', category: 'other', desc: 'Source: VL Techniques (Giammaria)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'VL Techniques (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Lite-Techniques', provider: 'vegaLite' },
+  { file: 'charts/community/other/advanced-version-includes-ability-to-drag-a-particle-around.vg.json', name: 'Advanced version includes ability to drag a particle around ', category: 'other', desc: 'Source: Deneb Showcase (David)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/average-daily-count-of-bicycles-by-day-of-week.vg.json', name: 'Average Daily Count of Bicycles by Day of Week', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/average-daily-count-of-bicycles-by-month.vg.json', name: 'Average Daily Count of Bicycles by Month', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/balloons.vl.json', name: 'Balloons', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/box-office-vs-gaming-revenues.vl.json', name: 'Box Office Vs Gaming Revenues', category: 'other', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/other/buffet-top-5-holdings.vl.json', name: 'Buffet Top 5 Holdings', category: 'other', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/other/citrus.vl.json', name: 'Citrus', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/combined-small-multiple.vg.json', name: 'Combined Small Multiple', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/comet-chart.vl.json', name: 'Comet Chart', category: 'other', desc: 'by Meagan Longoria | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/custom-slicer-password-protection-filters-data-table-by-u.vg.json', name: 'Custom slicer / password protection. Filters data table by u', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/dataviz-by-dav-bacci.vg.json', name: 'Dataviz by Dav Bacci', category: 'other', desc: 'Source: Deneb Showcase (David)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-10.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'other', desc: 'Source: Deneb Showcase (David)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-11.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'other', desc: 'Source: Deneb Showcase (David)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/doomsday-clock.vl.json', name: 'Doomsday Clock', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/dot-plot-json.vg.json', name: 'Dot Plot.Json', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/du-bois-challenge-2022-graph-3.vl.json', name: 'Du Bois Challenge 2022 Graph 3', category: 'other', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge-2022-graph-3-1.vl.json', name: 'Du Bois Challenge 2022 Graph 3', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge01.vl.json', name: 'Du Bois Challenge01', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge02.vl.json', name: 'Du Bois Challenge02', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge03.vl.json', name: 'Du Bois Challenge03', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge04.vl.json', name: 'Du Bois Challenge04', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge05.vl.json', name: 'Du Bois Challenge05', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge06.vl.json', name: 'Du Bois Challenge06', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge07.vl.json', name: 'Du Bois Challenge07', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge08.vl.json', name: 'Du Bois Challenge08', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge09.vl.json', name: 'Du Bois Challenge09', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/du-bois-challenge10.vl.json', name: 'Du Bois Challenge10', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/other/examining-life-expectancy-1955-vs-2000.vl.json', name: 'Examining Life Expectancy - 1955 vs. 2000', category: 'other', desc: 'Source: VL Techniques (Giammaria)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'VL Techniques (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Lite-Techniques', provider: 'vegaLite' },
+  { file: 'charts/community/other/fda-inspections.vl.json', name: 'Fda Inspections', category: 'other', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/other/image-dot-marks.vl.json', name: 'Image Dot Marks', category: 'other', desc: 'Source: PBI DataVizzle', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/other/image-trail-mark.vl.json', name: 'Image Trail Mark', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/lemon.vl.json', name: 'Lemon', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/line-charts-hconcat.vl.json', name: 'Line_Charts_HCONCAT', category: 'other', desc: 'by PBI Queryous | Source: PBI DataVizzle', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PBI DataVizzle', sourceUrl: 'https://github.com/PBI-DataVizzle/Deneb', provider: 'vegaLite' },
+  { file: 'charts/community/other/nutrient-breakdown-of-popular-dutch-street-foods.vg.json', name: 'Nutrient Breakdown of Popular Dutch Street Foods', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/openai-barchart.vl.json', name: 'Openai Barchart', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vegaLite' },
+  { file: 'charts/community/other/performance-quadrants.vl.json', name: 'Performance Quadrants', category: 'other', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/other/pet-ownership-internationally.vg.json', name: 'Pet Ownership Internationally', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/praise-kier.vg.json', name: 'Praise Kier!', category: 'other', desc: 'Source: Vega Visuals (Giammaria)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Vega Visuals (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Visuals', provider: 'vega' },
+  { file: 'charts/community/other/red-blue-words-in-the-text.vg.json', name: 'Red Blue Words In The Text', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/reproduction-of-the-nightingale-s-rose-diagram.vg.json', name: 'Reproduction of the Nightingale\\'s rose diagram', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/svg-drawing.vg.json', name: 'SVG drawing', category: 'other', desc: 'Source: DataViz Vega (Andrzej)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/other/simple-fireworks-spec.vg.json', name: 'Simple Fireworks Spec', category: 'other', desc: 'Source: Deneb Showcase (David)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/simple-tree.vg.json', name: 'Simple Tree', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vega' },
+  { file: 'charts/community/other/sliders.vl.json', name: 'Sliders', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/spec-1.vg.json', name: 'Spec', category: 'other', desc: 'Source: Deneb Showcase (David)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/spec-2.vg.json', name: 'Spec', category: 'other', desc: 'Source: Deneb Showcase (David)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/spec-3.vg.json', name: 'Spec', category: 'other', desc: 'Source: Deneb Showcase (David)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/square-plot.vl.json', name: 'Square Plot', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/the-enter-update-exit-pattern-is-a-core-concept-in-d3-js.vg.json', name: 'The enter, update, exit pattern is a core concept in d3.js. ', category: 'other', desc: 'Source: Vega Visuals (Giammaria)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Vega Visuals (Giammaria)', sourceUrl: 'https://github.com/Giammaria/Vega-Visuals', provider: 'vega' },
+  { file: 'charts/community/other/trellis-dot-plot.vl.json', name: 'Trellis Dot Plot', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/uk-population-2020.vl.json', name: 'Uk Population 2020', category: 'other', desc: 'Source: Vega-Lite (Shad Frigui)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Vega-Lite (Shad Frigui)', sourceUrl: 'https://github.com/shadfrigui/vega-lite', provider: 'vegaLite' },
+  { file: 'charts/community/other/vibes.vl.json', name: 'Vibes', category: 'other', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/other/visualization-by-ying-fu-aka-flynnxx1-https-www-linkedi.vg.json', name: 'Visualization by Ying Fu aka \\'Flynnxx1\\' (https://www.linkedi', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/visualization-by-ying-fu-aka-flynnxx1-https-www-linkedi-2.vg.json', name: 'Visualization by Ying Fu aka \\'Flynnxx1\\' (https://www.linkedi', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/visualization-by-ying-fu-aka-flynnxx1-https-www-linkedi-4.vg.json', name: 'Visualization by Ying Fu aka \\'Flynnxx1\\' (https://www.linkedi', category: 'other', desc: 'Source: Deneb Showcase (Flynnxx1)', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'Deneb Showcase (Flynnxx1)', sourceUrl: 'https://github.com/Flynnxx1/Deneb-Vega-Showcase', provider: 'vega' },
+  { file: 'charts/community/other/wheat-and-wages-vega-lite.vl.json', name: 'Wheat And Wages Vega Lite', category: 'other', desc: 'Source: PowerBI Tips', accent: '#FDCB6E', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/sankey/microsoft-s-fy23-q2-income-statement.vg.json', name: 'Microsoft\\'s FY23 Q2 Income Statement', category: 'sankey', desc: 'Source: Deneb Showcase (David)', accent: '#E74C3C', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/scatter/-3.vg.json', name: '', category: 'scatter', desc: 'Source: DataViz Vega (Andrzej)', accent: '#7B68EE', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/scatter/-4.vg.json', name: '', category: 'scatter', desc: 'Source: DataViz Vega (Andrzej)', accent: '#7B68EE', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/scatter/categorical-jitter-scatter-mean-overlay.vl.json', name: 'Categorical Jitter Scatter Mean Overlay', category: 'scatter', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/categorical-jitter-scatter-mean-overlay-1.vl.json', name: 'Categorical Jitter Scatter Mean Overlay', category: 'scatter', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/composite-scatter-bin.vl.json', name: 'Composite Scatter Bin', category: 'scatter', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/convex-hull-implementation-by-david-bacci-https-www-linke.vg.json', name: 'Convex hull implementation by David Bacci: https://www.linke', category: 'scatter', desc: 'Source: Deneb Showcase (David)', accent: '#7B68EE', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/scatter/correlation-chart.vl.json', name: 'Correlation Chart', category: 'scatter', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'scatter', desc: 'Source: Deneb Showcase (David)', accent: '#7B68EE', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/scatter/dataviz-by-david-bacci-https-www-linkedin-com-in-davbacci-1.vg.json', name: 'Dataviz by David Bacci: https://www.linkedin.com/in/davbacci', category: 'scatter', desc: 'Source: Deneb Showcase (David)', accent: '#7B68EE', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/scatter/deneb-by-david-bacci.vg.json', name: 'Deneb by David Bacci', category: 'scatter', desc: 'Source: Deneb Showcase (David)', accent: '#7B68EE', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/scatter/fanciful-lollipop.vl.json', name: 'Fanciful Lollipop', category: 'scatter', desc: 'by Mike Carlo | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/fancy-dumb-bell.vl.json', name: 'Fancy Dumb Bell', category: 'scatter', desc: 'Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/image-scatter.vl.json', name: 'Image Scatter', category: 'scatter', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/loess-regression.vl.json', name: 'Loess Regression', category: 'scatter', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/piano-quintet-no-2-in-c-minor-op-115-gabriel-faur.vg.json', name: 'Piano Quintet No. 2 in C Minor Op. 115 - Gabriel Fauré', category: 'scatter', desc: 'Source: DataViz Vega (Andrzej)', accent: '#7B68EE', dataKey: 'general', community: true, source: 'DataViz Vega (Andrzej)', sourceUrl: 'https://github.com/avatorl/DataViz-Vega', provider: 'vega' },
+  { file: 'charts/community/scatter/radial-bubbles-tree.vg.json', name: 'Radial Bubbles Tree', category: 'scatter', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vega' },
+  { file: 'charts/community/scatter/raincloud-plot.vl.json', name: 'Raincloud Plot', category: 'scatter', desc: 'by Daniel Marsh-Patrick | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/rainclouds-labelled.vl.json', name: 'Rainclouds Labelled', category: 'scatter', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/regression.vl.json', name: 'Regression', category: 'scatter', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/scatter-histogram.vl.json', name: 'Scatter Histogram', category: 'scatter', desc: 'by Kerry Kolosko | Source: PowerBI Tips', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/scatter/violin-plot-with-box-plot.vl.json', name: 'Violin Plot with Box Plot', category: 'scatter', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#7B68EE', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/waffle/bar-chart-with-text-labels-set-domain-to-make-the-frame-cov.vl.json', name: 'Bar chart with text labels. Set domain to make the frame cov', category: 'waffle', desc: 'Source: Deneb Showcase (David)', accent: '#6C5CE7', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/waffle/spec-5.vl.json', name: 'Spec', category: 'waffle', desc: 'Source: Deneb Showcase (David)', accent: '#6C5CE7', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vegaLite' },
+  { file: 'charts/community/waffle/spec-circle.vg.json', name: 'Spec (Circle)', category: 'waffle', desc: 'Source: Deneb Showcase (David)', accent: '#6C5CE7', dataKey: 'general', community: true, source: 'Deneb Showcase (David)', sourceUrl: 'https://github.com/PBI-David/Deneb-Showcase', provider: 'vega' },
+  { file: 'charts/community/waterfall/enhanced-waterfall.vl.json', name: 'Enhanced Waterfall', category: 'waterfall', desc: 'by Jan Schroeven | Source: PowerBI Tips', accent: '#00CEC9', dataKey: 'general', community: true, source: 'PowerBI Tips', sourceUrl: 'https://github.com/PowerBI-tips/Deneb-Templates', provider: 'vegaLite' },
+  { file: 'charts/community/waterfall/financial-waterfall-chart.vl.json', name: 'Financial Waterfall Chart', category: 'waterfall', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#00CEC9', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' },
+  { file: 'charts/community/waterfall/waterfall-chart-with-period-variance.vl.json', name: 'Waterfall Chart with Period Variance', category: 'waterfall', desc: 'by Greg Philps | Source: PBI Documentation', accent: '#00CEC9', dataKey: 'general', community: true, source: 'PBI Documentation', sourceUrl: 'https://github.com/alexbadiu-insightsinmotion/PBI-Documentation', provider: 'vegaLite' }
 ];
 
 // Per-chart-type sample data
@@ -571,11 +928,18 @@ const SAMPLE_DATA = {
   ],
 };
 
-const categories = ['all', ...new Set(CHARTS.map(c => c.category))];
+// Collect unique categories and sources
+const categories = ['all', ...new Set(CHARTS.map(c => c.category))].sort((a, b) => {
+  if (a === 'all') return -1;
+  if (b === 'all') return 1;
+  return a.localeCompare(b);
+});
+const sources = ['all', 'vegaviz', ...new Set(CHARTS.filter(c => c.source).map(c => c.source))].filter((v, i, a) => a.indexOf(v) === i);
+
 const specCache = {};
 
 // Build filter buttons
-const toolbar = document.querySelector('.toolbar');
+const toolbar = document.getElementById('toolbar');
 categories.slice(1).forEach(cat => {
   const btn = document.createElement('button');
   btn.className = 'filter-btn';
@@ -584,10 +948,56 @@ categories.slice(1).forEach(cat => {
   toolbar.insertBefore(btn, document.getElementById('chartCount'));
 });
 
-// Event delegation for filters
+// Build source filter buttons
+const sourceToolbar = document.getElementById('sourceToolbar');
+sources.slice(2).forEach(src => {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  btn.dataset.source = src;
+  btn.textContent = src;
+  btn.style.fontSize = '0.72rem';
+  btn.style.padding = '0.25rem 0.5rem';
+  sourceToolbar.appendChild(btn);
+});
+
+// Build credits grid
+const creditsGrid = document.getElementById('creditsGrid');
+const sourceCounts = {};
+CHARTS.forEach(c => {
+  const src = c.source || 'vegaviz';
+  sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+});
+const sourceUrls = {};
+CHARTS.forEach(c => {
+  if (c.sourceUrl) sourceUrls[c.source] = c.sourceUrl;
+});
+sourceUrls['vegaviz'] = 'https://github.com/CodeWithBehnam/vegaviz';
+
+Object.entries(sourceCounts).sort((a, b) => b[1] - a[1]).forEach(([src, cnt]) => {
+  const a = document.createElement('a');
+  a.className = 'credit-item';
+  a.href = sourceUrls[src] || '#';
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.innerHTML = `<span class="credit-count">${cnt}</span> ${src}`;
+  creditsGrid.appendChild(a);
+});
+
+// Update total badge
+document.getElementById('totalBadge').textContent = `${CHARTS.length} Charts`;
+
+// Event delegation for category filters
 toolbar.addEventListener('click', e => {
   if (!e.target.classList.contains('filter-btn')) return;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  toolbar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  renderGallery();
+});
+
+// Event delegation for source filters
+sourceToolbar.addEventListener('click', e => {
+  if (!e.target.classList.contains('filter-btn')) return;
+  sourceToolbar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
   renderGallery();
 });
@@ -596,11 +1006,14 @@ document.getElementById('search').addEventListener('input', renderGallery);
 
 function getFiltered() {
   const q = document.getElementById('search').value.toLowerCase();
-  const cat = document.querySelector('.filter-btn.active').dataset.filter;
+  const cat = toolbar.querySelector('.filter-btn.active').dataset.filter;
+  const src = sourceToolbar.querySelector('.filter-btn.active').dataset.source;
   return CHARTS.filter(c => {
     const matchCat = cat === 'all' || c.category === cat;
-    const matchQ = !q || c.name.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.category.includes(q);
-    return matchCat && matchQ;
+    const chartSource = c.source || 'vegaviz';
+    const matchSrc = src === 'all' || chartSource === src;
+    const matchQ = !q || c.name.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.category.includes(q) || (c.source || '').toLowerCase().includes(q);
+    return matchCat && matchSrc && matchQ;
   });
 }
 
@@ -614,25 +1027,49 @@ function renderGallery() {
     return;
   }
 
-  gallery.innerHTML = filtered.map((chart, i) => `
-    <div class="card loading-card" data-idx="${CHARTS.indexOf(chart)}">
+  gallery.innerHTML = filtered.map((chart, i) => {
+    const idx = CHARTS.indexOf(chart);
+    const sourceHtml = chart.community
+      ? `<a class="card-source" href="${chart.sourceUrl}" target="_blank" rel="noopener">${chart.source}</a>`
+      : '';
+    const providerHtml = chart.provider
+      ? `<span class="card-provider ${chart.provider === 'vega' ? 'vega' : 'vegalite'}">${chart.provider === 'vega' ? 'Vega' : 'VL'}</span>`
+      : '';
+    return `
+    <div class="card loading-card" data-idx="${idx}">
       <div class="card-header">
         <span class="card-title">${chart.name}</span>
-        <span class="card-category" style="border-color:${chart.accent};color:${chart.accent}">${chart.category}</span>
+        <div class="card-badges">
+          ${providerHtml}
+          <span class="card-category" style="border-color:${chart.accent};color:${chart.accent}">${chart.category}</span>
+          ${sourceHtml}
+        </div>
       </div>
       <div class="card-desc">${chart.desc}</div>
-      <div class="card-preview" id="preview-${CHARTS.indexOf(chart)}">Loading...</div>
+      <div class="card-preview" id="preview-${idx}">Loading...</div>
       <div class="card-actions">
-        <button class="btn btn--primary" onclick="copySpec(${CHARTS.indexOf(chart)}, this)">Copy Spec</button>
-        <button class="btn btn--code" onclick="viewCode(${CHARTS.indexOf(chart)})">View JSON</button>
-        <a class="btn btn--secondary" href="#" onclick="openEditor(${CHARTS.indexOf(chart)});return false;">Vega Editor</a>
+        <button class="btn btn--primary" onclick="copySpec(${idx}, this)">Copy Spec</button>
+        <button class="btn btn--code" onclick="viewCode(${idx})">View JSON</button>
+        <a class="btn btn--secondary" href="#" onclick="openEditor(${idx});return false;">Vega Editor</a>
       </div>
     </div>
-  `).join('');
+  `;}).join('');
+
+  // Lazy load previews with IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = parseInt(entry.target.id.replace('preview-', ''));
+        loadAndRender(idx);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '200px' });
 
   filtered.forEach(chart => {
     const idx = CHARTS.indexOf(chart);
-    loadAndRender(idx);
+    const el = document.getElementById(`preview-${idx}`);
+    if (el) observer.observe(el);
   });
 }
 
@@ -685,6 +1122,17 @@ function replacePlaceholders(str) {
     .replace(/"__Order__"/g, '"Order"');
 }
 
+// Replace __0__, __1__, etc. numbered placeholders
+function replaceNumberedPlaceholders(str) {
+  return str
+    .replace(/"__0__"/g, '"Category"')
+    .replace(/"__1__"/g, '"Sales"')
+    .replace(/"__2__"/g, '"Region"')
+    .replace(/"__3__"/g, '"Profit"')
+    .replace(/"__4__"/g, '"Target"')
+    .replace(/"__5__"/g, '"Date"');
+}
+
 // Replace all pbiColor expressions with real hex colors
 function replacePbiColors(str) {
   const colors = ['#4C78A8', '#F58518', '#E45756', '#72B7B2', '#54A24B', '#EECA3B'];
@@ -699,6 +1147,21 @@ function replacePbiColors(str) {
     .replace(/"scheme"\s*:\s*"pbiColor\w+"/g, '"scheme": "tableau10"');
 }
 
+// Check if spec has its own data (inline values or url)
+function hasOwnData(obj) {
+  if (!obj || typeof obj !== 'object') return false;
+  if (obj.data) {
+    if (obj.data.values || obj.data.url) return true;
+    if (Array.isArray(obj.data) && obj.data.some(d => d.values || d.url)) return true;
+  }
+  if (obj.datasets) return true;
+  // Check Vega-style data array
+  if (Array.isArray(obj.data) && obj.data.length > 0) {
+    if (obj.data.some(d => d.values || d.url)) return true;
+  }
+  return false;
+}
+
 // Recursively inject sample data into any {name: "dataset"} data reference
 function injectData(obj, sampleData) {
   if (!obj || typeof obj !== 'object') return;
@@ -706,7 +1169,6 @@ function injectData(obj, sampleData) {
   if (obj.data && obj.data.name === 'dataset') {
     obj.data = { values: sampleData };
   }
-  // Recurse into known nesting keys
   ['layer', 'concat', 'hconcat', 'vconcat'].forEach(k => {
     if (Array.isArray(obj[k])) obj[k].forEach(item => injectData(item, sampleData));
   });
@@ -720,32 +1182,40 @@ async function loadAndRender(idx) {
     const spec = await fetchSpec(idx);
     const renderSpec = stripUsermeta(spec);
     const chart = CHARTS[idx];
+    const isVega = chart.provider === 'vega';
+    const specHasData = hasOwnData(renderSpec);
 
-    // 1) Replace placeholders
-    let specStr = replacePlaceholders(JSON.stringify(renderSpec));
+    let specStr = JSON.stringify(renderSpec);
 
-    // 2) Replace pbiColor expressions
+    if (!specHasData) {
+      // Replace placeholders for Deneb-style specs
+      specStr = replacePlaceholders(specStr);
+      specStr = replaceNumberedPlaceholders(specStr);
+    }
+
+    // Replace pbiColor expressions
     specStr = replacePbiColors(specStr);
 
     let previewSpec = JSON.parse(specStr);
 
-    // 3) Get the right sample data for this chart type
-    const sampleData = SAMPLE_DATA[chart.dataKey] || SAMPLE_DATA.general;
+    // Inject sample data only if spec uses "dataset" data source
+    if (!specHasData) {
+      const sampleData = SAMPLE_DATA[chart.dataKey] || SAMPLE_DATA.general;
+      injectData(previewSpec, sampleData);
+    }
 
-    // 4) Deep inject data into all levels of the spec
-    injectData(previewSpec, sampleData);
-
-    // 5) Set fixed dimensions for preview
-    if (!previewSpec.facet) {
+    // Set fixed dimensions for preview (Vega-Lite only)
+    if (!isVega && !previewSpec.facet) {
       previewSpec.width = 370;
       previewSpec.height = 220;
+      previewSpec.autosize = { type: 'fit', contains: 'padding' };
     }
-    previewSpec.autosize = { type: 'fit', contains: 'padding' };
 
     el.innerHTML = '';
     await vegaEmbed(el, previewSpec, {
       actions: false,
       renderer: 'svg',
+      mode: isVega ? 'vega' : 'vega-lite',
       config: {
         view: { stroke: 'transparent' },
         font: 'Space Grotesk',
@@ -774,23 +1244,38 @@ async function copySpec(idx, btn) {
 
 async function viewCode(idx) {
   const spec = await fetchSpec(idx);
-  document.getElementById('modalTitle').textContent = CHARTS[idx].name;
+  const chart = CHARTS[idx];
+  document.getElementById('modalTitle').textContent = chart.name;
   document.getElementById('modalCode').textContent = JSON.stringify(spec, null, 2);
   document.getElementById('modalCopy').onclick = async () => {
     await navigator.clipboard.writeText(JSON.stringify(spec, null, 2));
     document.getElementById('modalCopy').textContent = 'Copied!';
     setTimeout(() => document.getElementById('modalCopy').textContent = 'Copy JSON', 2000);
   };
-  const editorUrl = `https://vega.github.io/editor/#/url/vega-lite/${btoa(JSON.stringify(stripUsermeta(spec)))}`;
+  const isVega = chart.provider === 'vega';
+  const mode = isVega ? 'vega' : 'vega-lite';
+  const editorUrl = `https://vega.github.io/editor/#/url/${mode}/${btoa(unescape(encodeURIComponent(JSON.stringify(stripUsermeta(spec)))))}`;
   document.getElementById('modalVegaEditor').href = editorUrl;
+
+  const sourceBtn = document.getElementById('modalSource');
+  if (chart.sourceUrl) {
+    sourceBtn.href = chart.sourceUrl;
+    sourceBtn.style.display = '';
+  } else {
+    sourceBtn.style.display = 'none';
+  }
+
   document.getElementById('modal').classList.add('active');
 }
 
 function openEditor(idx) {
   fetchSpec(idx).then(spec => {
+    const chart = CHARTS[idx];
     const clean = stripUsermeta(spec);
+    const isVega = chart.provider === 'vega';
+    const mode = isVega ? 'vega' : 'vega-lite';
     const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(clean))));
-    window.open(`https://vega.github.io/editor/#/url/vega-lite/${encoded}`, '_blank');
+    window.open(`https://vega.github.io/editor/#/url/${mode}/${encoded}`, '_blank');
   });
 }
 
