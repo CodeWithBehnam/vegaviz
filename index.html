@@ -1194,16 +1194,41 @@ function replaceNumberedPlaceholders(str) {
 
 // Replace all pbiColor expressions with real hex colors
 function replacePbiColors(str) {
-  const colors = ['#4C78A8', '#F58518', '#E45756', '#72B7B2', '#54A24B', '#EECA3B'];
-  return str
-    .replace(/\{"expr":\s*"pbiColor\((\d+)\)"\}/g, (_, i) => `"${colors[+i] || colors[0]}"`)
-    .replace(/\{"expr":\s*"pbiColor\('good'\)"\}/g, '"#54A24B"')
-    .replace(/\{"expr":\s*"pbiColor\('bad'\)"\}/g, '"#E45756"')
-    .replace(/\{"expr":\s*"pbiColor\('min'\)"\}/g, '"#4C78A8"')
-    .replace(/\{"expr":\s*"pbiColor\('max'\)"\}/g, '"#E45756"')
-    .replace(/\{"expr":\s*"pbiColor\(0\)"\}/g, '"#4C78A8"')
-    .replace(/\{"expr":\s*"pbiColor\(1\)"\}/g, '"#F58518"')
-    .replace(/"scheme"\s*:\s*"pbiColor\w+"/g, '"scheme": "tableau10"');
+  const colors = ['#4C78A8', '#F58518', '#E45756', '#72B7B2', '#54A24B', '#EECA3B', '#B279A2', '#FF9DA6'];
+  const named = { good: '#54A24B', bad: '#E45756', min: '#4C78A8', max: '#E45756', positive: '#54A24B', negative: '#E45756', neutral: '#72B7B2' };
+
+  // First: replace standalone expr objects {"expr": "pbiColor(...)"} with color strings
+  str = str.replace(/\{"expr":\s*"pbiColor\((\d+)\)"\}/g, (_, i) => `"${colors[+i] || colors[0]}"`);
+  str = str.replace(/\{"expr":\s*"pbiColor\('(\w+)'\)"\}/g, (_, n) => `"${named[n] || colors[0]}"`);
+
+  // Second: replace pbiColor() calls inside complex expressions (ternaries, etc.)
+  str = str.replace(/pbiColor\((\d+)\)/g, (_, i) => `'${colors[+i] || colors[0]}'`);
+  str = str.replace(/pbiColor\('(\w+)'\)/g, (_, n) => `'${named[n] || colors[0]}'`);
+
+  // Replace pbiColor scheme names
+  str = str.replace(/"scheme"\s*:\s*"pbiColor\w+"/g, '"scheme": "tableau10"');
+  return str;
+}
+
+// Remove Deneb-specific pbiFormat references that Vega can't handle
+function replacePbiFormats(str) {
+  // Remove "formatType": "pbiFormat" entries (with optional leading comma)
+  str = str.replace(/,\s*"formatType"\s*:\s*"pbiFormat"/g, '');
+  // If formatType was the first property, remove it and trailing comma
+  str = str.replace(/"formatType"\s*:\s*"pbiFormat"\s*,?/g, '');
+  // Replace pbiFormat() calls in expressions with format() using simple comma format
+  str = str.replace(/pbiFormat\(([^,)]+),\s*'[^']*'\)/g, "format($1, ',')");
+  str = str.replace(/pbiFormat\(([^,)]+),\s*\\?"[^"]*\\?"\)/g, "format($1, ',')");
+  return str;
+}
+
+// Replace Deneb-specific pbiPatternSVG expressions with a fallback color
+function replacePbiPatterns(str) {
+  // Standalone: {"expr": "pbiPatternSVG(...)"} -> fallback to a grey
+  str = str.replace(/\{"expr":\s*"pbiPatternSVG\([^"]*\)"\}/g, '"#D3D3D3"');
+  // Inside complex expressions: replace pbiPatternSVG(...) call with a grey string
+  str = str.replace(/pbiPatternSVG\([^)]*\)/g, "'#D3D3D3'");
+  return str;
 }
 
 // Check if spec has its own data (inline values or url)
@@ -1252,8 +1277,10 @@ async function loadAndRender(idx) {
       specStr = replaceNumberedPlaceholders(specStr);
     }
 
-    // Replace pbiColor expressions
+    // Replace Deneb-specific expressions for gallery preview
     specStr = replacePbiColors(specStr);
+    specStr = replacePbiFormats(specStr);
+    specStr = replacePbiPatterns(specStr);
 
     let previewSpec = JSON.parse(specStr);
 
