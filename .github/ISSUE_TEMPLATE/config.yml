@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Deneb Documentation
+    url: https://deneb-viz.github.io/
+    about: Official Deneb documentation for Power BI
+  - name: Vega-Lite Examples
+    url: https://vega.github.io/vega-lite/examples/
+    about: Official Vega-Lite example gallery
