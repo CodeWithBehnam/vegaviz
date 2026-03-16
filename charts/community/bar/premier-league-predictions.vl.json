@@ -1,0 +1,143 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 700,
+  "height": 700,
+  "data": {
+    "url": "premier-league-predictions-data.json"
+  },
+  "encoding": {
+    "x": {
+      "field": "Team",
+      "type": "nominal",
+      "sort": {
+        "field": "Current"
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "color": {
+          "expr": "datum['Current'] < datum['Prediction'] ? '#F34146' : '#81C14F'"
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "Current",
+          "type": "quantitative",
+          "sort": "descending"
+        },
+        "y2": {
+          "field": "Prediction"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 500,
+        "color": {
+          "expr": "datum['Current'] < datum['Prediction'] ? '#F34146' : '#81C14F'"
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "Prediction",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 600,
+        "color": "#3D195B"
+      },
+      "encoding": {
+        "y": {
+          "field": "Current",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "yOffset": {
+          "expr": "datum['Current'] < datum['Prediction'] ? 1 : 0"
+        },
+        "fontSize": 12,
+        "color": {
+          "expr": "datum['Current'] < datum['Prediction'] ? 'white' : 'black'"
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "Prediction",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Prediction"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "color": "white"
+      },
+      "encoding": {
+        "y": {
+          "field": "Current",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Current"
+        }
+      }
+    }
+  ],
+  "config": {
+    "padding": {
+      "top": 50,
+      "bottom": 50,
+      "left": 20,
+      "right": 20
+    },
+    "background": "white",
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "Segoe UI",
+    "axisX": {
+      "orient": "top",
+      "grid": true,
+      "gridOpacity": 1,
+      "domain": false,
+      "ticks": false,
+      "labelPadding": 20,
+      "labelFontSize": 13,
+      "title": null
+    },
+    "axisY": {
+      "disable": true
+    },
+    "bar": {
+      "width": 15
+    },
+    "circle": {
+      "opacity": 1
+    }
+  },
+  "usermeta": {
+    "information": {
+      "name": "Premier League Predictions",
+      "source": {
+        "repo": "shadfrigui/vega-lite",
+        "url": "https://github.com/shadfrigui/vega-lite"
+      }
+    }
+  }
+}

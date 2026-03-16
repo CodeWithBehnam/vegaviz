@@ -1,0 +1,136 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "RACI Matrix with embedded role letters and enhanced formatting https://www.linkedin.com/in/devon-locher/ | https://github.com/DL0K-pbi/PMO_toolkit",
+  "title": {
+    "text": "",
+    "anchor": "start",
+    "offset": 30
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "transform": [
+    {
+      "calculate": "datum[''#''] + '' '' + datum[''Project Task'']",
+      "as": "TaskLabel"
+    },
+    {
+      "impute": "RACI",
+      "key": "Employee Name",
+      "groupby": [
+        "TaskLabel"
+      ],
+      "value": ""
+    }
+  ],
+  "width": {
+    "step": 80
+  },
+  "height": {
+    "step": 30
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "stroke": "black",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "Employee Name",
+          "type": "nominal",
+          "sort": "ascending",
+          "axis": {
+            "title": "Employee",
+            "labelAngle": 0,
+            "orient": "top",
+            "ticks": false,
+            "tickSize": 0,
+            "labelPadding": 12,
+            "titlePadding": 20,
+            "domain": false
+          }
+        },
+        "y": {
+          "field": "TaskLabel",
+          "type": "nominal",
+          "sort": "-y",
+          "axis": {
+            "title": "Task",
+            "ticks": false,
+            "tickSize": 0,
+            "labelPadding": 10,
+            "titlePadding": 16,
+            "domain": false
+          }
+        },
+        "color": {
+          "field": "RACI",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "R",
+              "A",
+              "C",
+              "I"
+            ],
+            "range": [
+              "#0070C0",
+              "#FF0000",
+              "#92D050",
+              "#FFC000"
+            ]
+          },
+          "legend": {
+            "title": "RACI Role",
+            "labelFontSize": 12,
+            "titleFontSize": 14,
+            "symbolSize": 180
+          }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "color": "black"
+      },
+      "encoding": {
+        "x": {
+          "field": "Employee Name",
+          "type": "nominal"
+        },
+        "y": {
+          "field": "TaskLabel",
+          "type": "nominal"
+        },
+        "text": {
+          "field": "RACI",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "config": {
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 14,
+      "gridColor": "black",
+      "gridOpacity": 1
+    }
+  },
+  "usermeta": {
+    "information": {
+      "name": "RACI Matrix",
+      "source": {
+        "repo": "DL0K-pbi/PMO_toolkit",
+        "url": "https://github.com/DL0K-pbi/PMO_toolkit"
+      }
+    }
+  }
+}

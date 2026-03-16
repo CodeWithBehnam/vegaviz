@@ -1,0 +1,179 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "DL0K-pbi PMO_toolkit: Risk Matrix connects with the project risk assessment excel document as a data source connected to power bi https://www.linkedin.com/in/devon-locher/ | https://github.com/DL0K-pbi/PMO_toolkit",
+  "data": {
+    "name": "dataset"
+  },
+  "transform": [
+    {
+      "filter": "datum[''Impact Value''] != null && datum[''Probability Value''] != null"
+    }
+  ],
+  "title": {
+    "text": "Inherent Risk Matrix (Before Controls)",
+    "fontSize": 18,
+    "fontWeight": "bold",
+    "anchor": "middle"
+  },
+  "encoding": {
+    "x": {
+      "field": "Impact Value",
+      "type": "ordinal",
+      "sort": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "axis": {
+        "title": "Impact",
+        "orient": "top",
+        "titleFontSize": 14,
+        "labelExpr": "['''',''Very Low'',''Low'',''Medium'',''High'',''Very High''][toNumber(datum.value)]",
+        "labelFontSize": 12,
+        "labelAngle": 0,
+        "labelBaseline": "middle",
+        "labelPadding": 10,
+        "ticks": false,
+        "domain": false
+      },
+      "scale": {
+        "paddingInner": 0,
+        "paddingOuter": 0
+      }
+    },
+    "y": {
+      "field": "Probability Value",
+      "type": "ordinal",
+      "sort": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "axis": {
+        "title": "Probability",
+        "titleFontSize": 14,
+        "labelExpr": "['''',''Very Low'',''Low'',''Medium'',''High'',''Very High''][toNumber(datum.value)]",
+        "labelFontSize": 12,
+        "labelPadding": 6,
+        "ticks": false,
+        "domain": false
+      },
+      "scale": {
+        "reverse": true,
+        "paddingInner": 0,
+        "paddingOuter": 0
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "stroke": "#353839",
+        "strokeWidth": 1.1
+      },
+      "encoding": {
+        "detail": {
+          "field": "RT#"
+        },
+        "opacity": {
+          "condition": {
+            "test": {
+              "field": "__selected__",
+              "equal": "off"
+            },
+            "value": 0.3
+          },
+          "value": 1
+        },
+        "color": {
+          "condition": [
+            {
+              "test": "datum[''Risk Rating''] == ''Sustainable''",
+              "value": "#92D050"
+            },
+            {
+              "test": "datum[''Risk Rating''] == ''Moderate''",
+              "value": "#F8F806"
+            },
+            {
+              "test": "datum[''Risk Rating''] == ''Severe''",
+              "value": "#FFC000"
+            },
+            {
+              "test": "datum[''Risk Rating''] == ''Critical''",
+              "value": "#FF0000"
+            }
+          ],
+          "value": "#D9E1F2"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 13,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {
+          "field": "Impact Value",
+          "type": "ordinal",
+          "sort": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "y": {
+          "field": "Probability Value",
+          "type": "ordinal",
+          "sort": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "text": {
+          "condition": {
+            "test": "datum[''RA Inherent Risk''] > 0",
+            "field": "RA Inherent Risk"
+          },
+          "value": ""
+        },
+        "color": {
+          "value": "black"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "grid": false,
+      "domain": false
+    },
+    "background": "transparent"
+  },
+  "usermeta": {
+    "information": {
+      "name": "Inherent Risk Matrix (Before Controls)",
+      "source": {
+        "repo": "DL0K-pbi/PMO_toolkit",
+        "url": "https://github.com/DL0K-pbi/PMO_toolkit"
+      }
+    }
+  }
+}

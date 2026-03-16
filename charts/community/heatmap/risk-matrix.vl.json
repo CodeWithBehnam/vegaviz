@@ -1,0 +1,208 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "DL0K-pbi PMO_toolkit: Risk Matrix connects with the project risk assessment excel document as a data source connected to power bi https://www.linkedin.com/in/devon-locher/ | https://github.com/DL0K-pbi/PMO_toolkit",
+  "data": {
+    "name": "dataset"
+  },
+  "transform": [
+    {
+      "filter": "datum[''Impact #''] != null && datum[''Probability #''] != null"
+    },
+    {
+      "calculate": "replace(datum[''Impact #''], /^\\d+\\s/, '''')",
+      "as": "ImpactLabel"
+    },
+    {
+      "calculate": "replace(datum[''Probability #''], /^\\d+\\s/, '''')",
+      "as": "ProbabilityLabel"
+    }
+  ],
+  "title": {
+    "text": "Risk Matrix",
+    "fontSize": 18,
+    "fontWeight": "bold",
+    "anchor": "middle"
+  },
+  "encoding": {
+    "x": {
+      "field": "ImpactLabel",
+      "type": "nominal",
+      "sort": [
+        "Very Low",
+        "Low",
+        "Medium",
+        "High",
+        "Very High"
+      ],
+      "axis": {
+        "title": "Impact",
+        "orient": "top",
+        "labelAngle": 0,
+        "labelFontSize": 12,
+        "titleFontSize": 13,
+        "ticks": false,
+        "domain": false,
+        "labelPadding": 8,
+        "titlePadding": 10
+      }
+    },
+    "y": {
+      "field": "ProbabilityLabel",
+      "type": "nominal",
+      "sort": [
+        "Very High",
+        "High",
+        "Medium",
+        "Low",
+        "Very Low"
+      ],
+      "axis": {
+        "title": "Liklihood",
+        "labelFontSize": 12,
+        "titleFontSize": 13,
+        "ticks": false,
+        "domain": false,
+        "labelPadding": 8,
+        "titlePadding": 10
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "stroke": "black",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "color": {
+          "condition": [
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Very High'' && datum[''ImpactLabel''] == ''Very Low''",
+              "value": "#F8F806"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Very High'' && (datum[''ImpactLabel''] == ''Low'' || datum[''ImpactLabel''] == ''Medium'')",
+              "value": "#FFA322"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Very High'' && (datum[''ImpactLabel''] == ''High'' || datum[''ImpactLabel''] == ''Very High'')",
+              "value": "#FF0000"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''High'' && datum[''ImpactLabel''] == ''Very Low''",
+              "value": "#92D050"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''High'' && datum[''ImpactLabel''] == ''Low''",
+              "value": "#F8F806"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''High'' && datum[''ImpactLabel''] == ''Medium''",
+              "value": "#FFA322"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''High'' && (datum[''ImpactLabel''] == ''High'' || datum[''ImpactLabel''] == ''Very High'')",
+              "value": "#FF0000"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Medium'' && datum[''ImpactLabel''] == ''Very Low''",
+              "value": "#92D050"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Medium'' && datum[''ImpactLabel''] == ''Low''",
+              "value": "#F8F806"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Medium'' && datum[''ImpactLabel''] == ''Medium''",
+              "value": "#F8F806"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Medium'' && datum[''ImpactLabel''] == ''High''",
+              "value": "#FFA322"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Medium'' && datum[''ImpactLabel''] == ''Very High''",
+              "value": "#FF0000"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Low'' && (datum[''ImpactLabel''] == ''Very Low'' || datum[''ImpactLabel''] == ''Low'')",
+              "value": "#92D050"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Low'' && datum[''ImpactLabel''] == ''Medium''",
+              "value": "#F8F806"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Low'' && datum[''ImpactLabel''] == ''High''",
+              "value": "#FFA322"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Low'' && datum[''ImpactLabel''] == ''Very High''",
+              "value": "#FF0000"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Very Low'' && (datum[''ImpactLabel''] == ''Very Low'' || datum[''ImpactLabel''] == ''Low'' || datum[''ImpactLabel''] == ''Medium'')",
+              "value": "#92D050"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Very Low'' && datum[''ImpactLabel''] == ''High''",
+              "value": "#F8F806"
+            },
+            {
+              "test": "datum[''ProbabilityLabel''] == ''Very Low'' && datum[''ImpactLabel''] == ''Very High''",
+              "value": "#FFA322"
+            }
+          ],
+          "value": "#D9E1F2"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "text": {
+          "field": "Risk Rating"
+        },
+        "color": {
+          "condition": [
+            {
+              "test": "datum[''Risk Rating''] == ''Critical''",
+              "value": "black"
+            },
+            {
+              "test": "datum[''Risk Rating''] == ''Severe''",
+              "value": "black"
+            }
+          ],
+          "value": "black"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "grid": false,
+      "domain": false
+    },
+    "background": "transparent"
+  },
+  "usermeta": {
+    "information": {
+      "name": "Risk Matrix",
+      "source": {
+        "repo": "DL0K-pbi/PMO_toolkit",
+        "url": "https://github.com/DL0K-pbi/PMO_toolkit"
+      }
+    }
+  }
+}

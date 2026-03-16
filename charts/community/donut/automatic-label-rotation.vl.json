@@ -1,0 +1,289 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Automatically rotate radial labels based on their theta value.",
+  "usermeta": {
+    "developedBy": "Madison Giammaria",
+    "LinkedIn": "https://www.linkedin.com/in/madison-giammaria-58463b33",
+    "email": "giammariam@gmail.com",
+    "information": {
+      "name": "Automatic Label Rotation",
+      "source": {
+        "repo": "Giammaria/Vega-Lite-Techniques",
+        "url": "https://github.com/Giammaria/Vega-Lite-Techniques"
+      }
+    }
+  },
+  "title": {
+    "text": "Automatic Label Rotation"
+  },
+  "width": 500,
+  "height": 350,
+  "params": [
+    {
+      "name": "msPerDay",
+      "expr": "86400000"
+    },
+    {
+      "name": "arcThickness",
+      "value": 30
+    },
+    {
+      "name": "automaticLabelRotation",
+      "value": false,
+      "bind": {
+        "input": "checkbox",
+        "name": "automatic label rotation:"
+      }
+    },
+    {
+      "name": "startRadian",
+      "value": 0,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 6.28318530718,
+        "step": 0.01,
+        "name": "start radian:"
+      }
+    }
+  ],
+  "data": {
+    "name": "dataset",
+    "values": [
+      {}
+    ]
+  },
+  "transform": [
+    {
+      "calculate": "toDate(toString(year(now()))+'-01-01')",
+      "as": "start"
+    },
+    {
+      "calculate": "toDate(toString(year(now()))+'-12-31')",
+      "as": "end"
+    },
+    {
+      "calculate": "sequence(toDate(datum['start']), toDate(datum['end'])+msPerDay, msPerDay)",
+      "as": "date"
+    },
+    {
+      "flatten": [
+        "date"
+      ],
+      "as": [
+        "date"
+      ]
+    },
+    {
+      "calculate": "+utcFormat(datum['date'], '%m')",
+      "as": "monthNumber"
+    },
+    {
+      "calculate": "utcFormat(datum['date'], '%B')",
+      "as": "month"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "count",
+          "as": "daysPerMonth"
+        }
+      ],
+      "groupby": [
+        "monthNumber",
+        "month"
+      ]
+    },
+    {
+      "stack": "daysPerMonth"
+    }
+  ],
+  "layer": [
+    {
+      "name": "arc",
+      "mark": {
+        "type": "arc",
+        "theta": {
+          "expr": "theta"
+        },
+        "theta2": {
+          "expr": "theta2"
+        },
+        "radius": {
+          "expr": "min(width, height)/2 - arcThickness"
+        },
+        "radius2": {
+          "expr": "min(width, height)/2"
+        },
+        "fillOpacity": {
+          "expr": "0.75"
+        }
+      },
+      "encoding": {
+        "theta": {
+          "field": "daysPerMonth",
+          "type": "quantitative",
+          "stack": true,
+          "scale": {
+            "range": [
+              {
+                "expr": "startRadian"
+              },
+              {
+                "expr": "startRadian+2*PI"
+              }
+            ]
+          }
+        },
+        "order": {
+          "field": "monthNum",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "month",
+          "type": "ordinal",
+          "sort": {
+            "field": "monthNumber"
+          },
+          "legend": null,
+          "scale": {
+            "scheme": "magma"
+          }
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "automaticLabelRotation",
+          "as": "automaticLabelRotation"
+        },
+        {
+          "calculate": "min(width, height)/2 - arcThickness/2",
+          "as": "radius"
+        },
+        {
+          "calculate": "scale('theta', datum['daysPerMonth_start'])",
+          "as": "theta1"
+        },
+        {
+          "calculate": "scale('theta', datum['daysPerMonth_end'])",
+          "as": "theta2"
+        },
+        {
+          "calculate": "datum['theta1']+(datum['theta2']-datum['theta1'])/2",
+          "as": "theta"
+        },
+        {
+          "calculate": "(datum['theta']*180/PI)%360",
+          "as": "angle"
+        },
+        {
+          "calculate": "datum['automaticLabelRotation'] ? (datum['angle'] + (datum['angle'] >= 90 && datum['angle'] <= 270 ? 180 : 0)) : datum['angle']",
+          "as": "angle"
+        },
+        {
+          "calculate": "luminance(scale('color', datum['month'])) > 0.5 ? '#000 ': '#fff'",
+          "as": "fontColor"
+        }
+      ],
+      "layer": [
+        {
+          "name": "labels",
+          "mark": {
+            "type": "text",
+            "fontSize": 14,
+            "align": "center",
+            "baseline": "middle",
+            "radius": {
+              "expr": "datum['radius']"
+            },
+            "angle": {
+              "expr": "datum['angle']"
+            },
+            "theta": {
+              "expr": "datum['theta']"
+            },
+            "color": {
+              "expr": "datum['fontColor']"
+            }
+          },
+          "encoding": {
+            "text": {
+              "field": "month",
+              "type": "ordinal"
+            }
+          }
+        },
+        {
+          "name": "rotationIndicator",
+          "transform": [
+            {
+              "calculate": "datum['automaticLabelRotation'] ? '\u2714\ufe0f' : ((datum['angle'] >= 90 && datum['angle'] <= 270 ? '\u274c' : '\u2714\ufe0f')) ",
+              "as": "indicator"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "baseline": "middle",
+            "radius": {
+              "expr": "datum['radius']+arcThickness"
+            },
+            "theta": {
+              "expr": "datum['theta']"
+            }
+          },
+          "encoding": {
+            "text": {
+              "field": "indicator",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "legend",
+      "transform": [
+        {
+          "filter": "datum['monthNumber']<=2"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "x": 0,
+        "y": {
+          "expr": "height + 30"
+        },
+        "lineHeight": 30,
+        "fontSize": 14,
+        "align": "left",
+        "text": {
+          "expr": "['\u2714\ufe0f - proper rotation', '\u274c - improper rotation', '\u200e']"
+        }
+      }
+    }
+  ],
+  "config": {
+    "background": "transparent",
+    "title": {
+      "subtitleFontSize": 13.5,
+      "subtitlePadding": 10,
+      "fontSize": 25,
+      "anchor": "start",
+      "fontStyle": "italic",
+      "color": "#666",
+      "dy": {
+        "expr": "-70"
+      },
+      "dx": {
+        "expr": "0"
+      },
+      "orient": "none",
+      "zindex": {
+        "expr": "99"
+      }
+    }
+  }
+}

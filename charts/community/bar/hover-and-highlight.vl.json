@@ -1,0 +1,76 @@
+{
+  "data": {
+    "values": [
+      {
+        "Month": 1,
+        "Hour": 100,
+        "Loss": 6000,
+        "Value": 0
+      },
+      {
+        "Month": 2,
+        "Hour": 150,
+        "Loss": 7500,
+        "Value": 0
+      },
+      {
+        "Month": 3,
+        "Hour": 160,
+        "Loss": 8500,
+        "Value": 0
+      }
+    ]
+  },
+  "mark": {
+    "type": "bar",
+    "tooltip": true,
+    "size": 25,
+    "stroke": "#f65038",
+    "fill": {
+      "expr": "pbiPatternSVG('diagonal-stripe-1', 'lightgray', 'white')"
+    }
+  },
+  "encoding": {
+    "fillOpacity": {
+      "value": {
+        "expr": "datum['__selected__']=='off'?0.2:1"
+      }
+    },
+    "strokeWidth": {
+      "value": {
+        "expr": "datum['__selected__']=='off'?0.2:2"
+      }
+    },
+    "x": {
+      "field": "Month",
+      "type": "nominal",
+      "title": null,
+      "axis": {
+        "labelAngle": 0,
+        "labelColor": "black",
+        "labelFont": "Segoe UI Semibold"
+      }
+    },
+    "y": {
+      "field": "Loss",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          0,
+          20000
+        ]
+      },
+      "title": null,
+      "axis": null
+    }
+  },
+  "usermeta": {
+    "information": {
+      "name": "Hover And Highlight",
+      "source": {
+        "repo": "PBI-DataVizzle/Deneb",
+        "url": "https://github.com/PBI-DataVizzle/Deneb"
+      }
+    }
+  }
+}
